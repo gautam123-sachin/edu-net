@@ -7,6 +7,7 @@ import About from './components/About/index.jsx';
 import Contact from './components/Contact/index.jsx';
 import Login from './components/Login/index.jsx';
 import Signup from './components/Signup/index.jsx';
+import Dashboard from './components/Dashboard/index.jsx';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/contact" element={<ContactWithHeader />} />
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />
+          <Route path='/dashboard' element={<Dashboard />} />
         </Routes>
       </>
     </Router>

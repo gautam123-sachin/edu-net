@@ -1,0 +1,25 @@
+{
+  "users": [
+    {
+      "id": "5316",
+      "firstname": "WebMobi",
+      "lastname": "Solutions",
+      "email": "test8427test@gmail.com",
+      "password": "123456"
+    },
+    {
+      "id": "f01a",
+      "firstname": "Sachin ",
+      "lastname": "Gautam",
+      "email": "sachingautam6239@gmail.com",
+      "password": "sachin@6239"
+    },
+    {
+      "id": "cad3",
+      "firstname": "lohin",
+      "lastname": "Solutions",
+      "email": "sg9769332@gmail.com",
+      "password": "123456"
+    }
+  ]
+}

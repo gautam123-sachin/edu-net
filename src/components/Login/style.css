@@ -9,7 +9,7 @@ body.login-bg {
     height: 100vh;
 }
 .login-container {
-    width: 500px;
+    width: 346px;
     margin: 0 auto; 
     background: #fff;
     border-radius: 10px;
@@ -56,4 +56,18 @@ body.login-bg {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+.additional-option{
+    /* margin-top: 10px; */
+    padding-top: 15px;
+}
+.error{
+    color: red;
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+@media (min-width: 768px) {
+    .sign-container {
+        width: 500px; /* Adjust width for web */
+    }
 }

@@ -1,7 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { Snackbar } from '@mui/material';
 import './style.css';
 
 const Login = () => {
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+    });
+    const [formErrors, setFormErrors] = useState({});
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const navigate = useNavigate(); // Import useHistory from 'react-router-dom'
 
     useEffect(() => {
         document.body.classList.add('login-bg');
@@ -10,20 +21,98 @@ const Login = () => {
         };
     }, []);
 
+    const handleInputChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    const validateFormData = () => {
+        const errors = {};
+        if (!formData.email) {
+            errors.email = "Email is required";
+        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            errors.email = 'Email is invalid';
+        }
+        if (!formData.password) {
+            errors.password = "Password is required";
+        }
+        setFormErrors(errors);
+        return Object.keys(errors).length === 0;
+    }
+
+    const handleLogin = async () => {
+        if (validateFormData()) {
+            try {
+                const response = await axios.get(`http://localhost:5000/users?email=${formData.email}&password=${formData.password}`);
+                if (response.data.length === 1) {
+                    // Login successful
+                    setOpenSnackbar(true);
+                    setSnackbarMessage('Login successful');
+                    navigate('/dashboard'); // Navigate to Dashboard
+                } else {
+                    // Login failed
+                    setOpenSnackbar(true);
+                    setSnackbarMessage('Invalid email or password');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                setOpenSnackbar(true);
+                setSnackbarMessage('Login failed. Please try again.');
+            }
+        }
+    }
+
+    const handleCloseSnackbar = () => {
+        setOpenSnackbar(false);
+    };
+
     return (
-        <div class="login-container">
-            <div class="login-header">
+        <div className="login-container">
+            <div className="login-header">
                 <h2>Login</h2>
             </div>
-            <div class="login-form">
-                <label for="username">Username:</label>
-                <input type="text" id="username" placeholder="Enter your username" />
+            <div className="login-form">
+                <input
+                    type="text"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="Enter your Email"
+                    maxLength={50}
+                />
+                {formErrors.email && <span className="error">{formErrors.email}</span>}
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    placeholder="Enter your password"
+                    maxLength={50}
+                />
+                {formErrors.password && <span className="error">{formErrors.password}</span>}
 
-                <label for="password">Password:</label>
-                <input type="password" id="password" placeholder="Enter your password" />
+                <label htmlFor="forgot-password"><Link to="/forgot-password">Forgot Password?</Link></label>
 
-                <button type="submit">Login</button>
+                <button type="submit" onClick={handleLogin}>Login</button>
+
+                <div className="additional-option">
+                    <span>Don't have an account? <Link to="/signup">Signup</Link></span>
+                </div>
             </div>
+            <Snackbar
+                open={openSnackbar}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackbar}
+                message={snackbarMessage}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                }}
+            />
         </div>
     );
 }

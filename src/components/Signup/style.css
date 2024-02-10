@@ -9,7 +9,8 @@ body.signup-bg {
     height: 100vh;
 }
 .sign-container {
-    width: 500px;
+    /* width: 500px; */
+    width: 346px; 
     margin: 0 auto; 
     background: #fff;
     border-radius: 10px;
@@ -56,4 +57,10 @@ body.signup-bg {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+@media (min-width: 768px) {
+    .sign-container {
+        width: 500px; /* Adjust width for web */
+    }
 }
