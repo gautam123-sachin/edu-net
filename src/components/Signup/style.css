@@ -1,0 +1,59 @@
+body.signup-bg {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: radial-gradient(#653d84, #332042);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+.sign-container {
+    width: 500px;
+    margin: 0 auto; 
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.sign-header {
+    background: linear-gradient(-45deg, #dcd7e0, #fff);
+    padding: 15px;
+    text-align: center;
+}
+
+.sign-header h2 {
+    margin: 0;
+    color: #333;
+}
+
+.sign-form {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sign-form label {
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.sign-form input {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+.sign-form button {
+    background: #653d84;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
