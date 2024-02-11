@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Snackbar } from '@mui/material';
 import './style.css'; 
 
 const Signup = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         firstname: '',
         lastname: '',
@@ -64,12 +66,14 @@ const Signup = () => {
                 if (response) {
                     setOpenSnackbar(true);
                     setSnackbarMessage('Signup successful!');
+                    navigate('/dashboard');
                     setFormData({
                         firstname: '',
                         lastname: '',
                         email: '',
                         password: '',
                     })
+                    
                 }
             } catch (error) {
                 console.error('Signup error:', error);
@@ -85,7 +89,7 @@ const Signup = () => {
         }
     }
     const handleCloseSnackbar = () => {
-        setOpenSnackbar(false); // Corrected from setSnackbarOpen(false)
+        setOpenSnackbar(false); 
     };
 
     return (

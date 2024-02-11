@@ -10,6 +10,7 @@ import Signup from './components/Signup/index.jsx';
 import Dashboard from './components/Dashboard/index.jsx';
 
 function App() {
+
   return (
     <Router>
       <>
@@ -19,7 +20,7 @@ function App() {
           <Route path="/contact" element={<ContactWithHeader />} />
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />
-          <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/dashboard/*' element={<Dashboard />} />
         </Routes>
       </>
     </Router>

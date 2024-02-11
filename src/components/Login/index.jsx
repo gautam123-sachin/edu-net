@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { Snackbar } from '@mui/material';
+
+import { login } from '../../redux/reducers/authReducer';
+
 import './style.css';
 
 const Login = () => {
@@ -12,7 +16,9 @@ const Login = () => {
     const [formErrors, setFormErrors] = useState({});
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
-    const navigate = useNavigate(); // Import useHistory from 'react-router-dom'
+    
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         document.body.classList.add('login-bg');
@@ -48,6 +54,7 @@ const Login = () => {
                 const response = await axios.get(`http://localhost:5000/users?email=${formData.email}&password=${formData.password}`);
                 if (response.data.length === 1) {
                     // Login successful
+                    dispatch(login(response.data[0]));
                     setOpenSnackbar(true);
                     setSnackbarMessage('Login successful');
                     navigate('/dashboard'); // Navigate to Dashboard
