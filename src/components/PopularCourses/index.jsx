@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { Grid, Typography, Card, CardContent, Button } from '@mui/material';
+import { Rating } from '@mui/material';
+import PersonIcon from '@mui/icons-material/Person';
+import ScheduleIcon from '@mui/icons-material/Schedule';
+import GroupIcon from '@mui/icons-material/Group';
 
 const PopularCourseItem = ({ imageSrc, price, rating, title, instructor, duration, studentCount }) => {
   const [hovered, setHovered] = useState(false);
-  console.log(hovered);
-
+console.log(hovered);
   return (
     <Grid item xs={12} sm={6} md={4} className="wow fadeInUp" data-wow-delay="0.1s">
       <Card
@@ -29,22 +32,20 @@ const PopularCourseItem = ({ imageSrc, price, rating, title, instructor, duratio
         <CardContent className="text-center p-4 pb-0">
           <Typography variant="h5" className="mb-0">${price}</Typography>
           <div className="mb-3">
-            {[...Array(rating).keys()].map((_, index) => (
-              <small key={index} className="fa fa-star text-primary"></small>
-            ))}
-            <small>({studentCount})</small>
+            <Rating value={rating} readOnly max={5} />
           </div>
           <Typography variant="h5" className="mb-4">{title}</Typography>
         </CardContent>
         <div className="d-flex border-top">
-          <Typography variant="body2" className="flex-fill text-center border-end py-2"><i className="fa fa-user-tie text-primary me-2"></i>{instructor}</Typography>
-          <Typography variant="body2" className="flex-fill text-center border-end py-2"><i className="fa fa-clock text-primary me-2"></i>{duration}</Typography>
-          <Typography variant="body2" className="flex-fill text-center py-2"><i className="fa fa-user text-primary me-2"></i>{studentCount} Students</Typography>
+          <Typography variant="body2" className="flex-fill text-center border-end py-2"><PersonIcon color="primary" sx={{ fontSize: 18, marginRight: 1 }} />{instructor}</Typography>
+          <Typography variant="body2" className="flex-fill text-center border-end py-2"><ScheduleIcon color="primary" sx={{ fontSize: 18, marginRight: 1 }} />{duration}</Typography>
+          <Typography variant="body2" className="flex-fill text-center py-2"><GroupIcon color="primary" sx={{ fontSize: 18, marginRight: 1 }} />{studentCount} Students</Typography>
         </div>
       </Card>
     </Grid>
   );
 };
+
 const PopularCourses = () => {
     return (
       <div className="container-xxl py-5">
@@ -54,13 +55,13 @@ const PopularCourses = () => {
             <Typography variant="h3" className="mb-5">Popular Courses</Typography>
           </div>
           <Grid container spacing={4} justifyContent="center">
-            <PopularCourseItem imageSrc="course-1.jpg" price="149.00" rating={5} title="Web Design & Development Course for Beginners" instructor="John Doe" duration="1.49 Hrs" studentCount={30} />
-            <PopularCourseItem imageSrc="course-2.jpg" price="149.00" rating={5} title="Web Design & Development Course for Beginners" instructor="John Doe" duration="1.49 Hrs" studentCount={30} />
-            <PopularCourseItem imageSrc="course-3.jpg" price="149.00" rating={5} title="Web Design & Development Course for Beginners" instructor="John Doe" duration="1.49 Hrs" studentCount={30} />
+            <PopularCourseItem imageSrc="course-1.jpg" price="149.00" rating={4.5} title="Web Design & Development Course for Beginners" instructor="John Doe" duration="1.49 Hrs" studentCount={30} />
+            <PopularCourseItem imageSrc="course-2.jpg" price="149.00" rating={3.8} title="Web Design & Development Course for Beginners" instructor="John Doe" duration="1.49 Hrs" studentCount={30} />
+            <PopularCourseItem imageSrc="course-3.jpg" price="149.00" rating={4.2} title="Web Design & Development Course for Beginners" instructor="John Doe" duration="1.49 Hrs" studentCount={30} />
           </Grid>
         </div>
       </div>
     );
-  };
-  
-  export default PopularCourses;
+};
+
+export default PopularCourses;
