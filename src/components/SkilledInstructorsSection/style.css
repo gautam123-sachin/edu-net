@@ -1,0 +1,35 @@
+.service-card {
+    box-shadow: none;
+    background-color: #9ad9df;
+    height: 250px;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 0 0 auto;
+    visibility: visible;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  @keyframes exampleAnimation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+  
+.service-card:hover {
+    background-color: #06BBCC;
+    color: white;
+    animation: exampleAnimation 0.5s ease;
+  } 
+  
+  .card-content {
+    display: flex;
+    /* background-color: #9ad9df;
+    box-shadow: none;  */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  

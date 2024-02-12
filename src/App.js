@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Header from './components/Header/index.jsx';
+import Footer from './components/Footer/index.jsx'; // Add this import
 import Home from './components/Home/index.jsx';
 import About from './components/About/index.jsx';
 import Contact from './components/Contact/index.jsx';
@@ -10,7 +11,6 @@ import Signup from './components/Signup/index.jsx';
 import Dashboard from './components/Dashboard/index.jsx';
 
 function App() {
-
   return (
     <Router>
       <>
@@ -27,15 +27,16 @@ function App() {
   );
 }
 
-const WithHeader = ({ children }) => (
+const WithHeaderAndFooter = ({ children }) => (
   <>
     <Header />
     {children}
+    <Footer />
   </>
 );
 
-const HomeWithHeader = () => <WithHeader><Home /></WithHeader>;
-const AboutWithHeader = () => <WithHeader><About /></WithHeader>;
-const ContactWithHeader = () => <WithHeader><Contact /></WithHeader>;
+const HomeWithHeader = () => <WithHeaderAndFooter><Home /></WithHeaderAndFooter>;
+const AboutWithHeader = () => <WithHeaderAndFooter><About /></WithHeaderAndFooter>;
+const ContactWithHeader = () => <WithHeaderAndFooter><Contact /></WithHeaderAndFooter>;
 
 export default App;

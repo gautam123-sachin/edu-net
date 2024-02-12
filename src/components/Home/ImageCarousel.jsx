@@ -1,42 +1,38 @@
 import React from 'react';
 import { Carousel } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+const ExampleCarouselImage = ({ src, alt }) => {
+    return (
+        <img
+            className="d-block w-100"
+            src={src}
+            alt={alt}
+            height={400}
+        />
+    );
+};
 
 const ImageCarousel = () => {
-    const slides = [
-        {
-            image: 'https://via.placeholder.com/800x400',
-            title: 'First Slide Label',
-            caption: 'Nulla vitae elit libero, a pharetra augue mollis interdum.'
-        },
-        {
-            image: 'https://via.placeholder.com/800x400',
-            title: 'Second Slide Label',
-            caption: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
-        },
-        {
-            image: 'https://via.placeholder.com/800x400',
-            title: 'Third Slide Label',
-            caption: 'Praesent commodo cursus magna, vel scelerisque nisl consectetur.'
-        }
+    const carouselItems = [
+        { src: 'Courses.png', alt: 'Learning with Earning 1', caption: 'Online Courses', captionText: 'Learn new skills and earn certifications through online courses.' },
+        { src: 'Freelancer.png', alt: 'Learning with Earning 2', caption: 'Freelancing', captionText: 'Work as a freelancer and earn while learning new skills.' },
+        { src: 'Invest.png', alt: 'Learning with Earning 3', caption: 'Investment', captionText: 'Invest in education and training to increase earning potential.' }
     ];
 
     return (
         <Carousel>
-            {slides.map((slide, index) => (
-                <Carousel.Item key={index}>
-                    <img
-                        className="d-block w-100"
-                        src={slide.image}
-                        alt={`Slide ${index + 1}`}
-                    />
+            {carouselItems.map((item, index) => (
+                <Carousel.Item key={index} interval={1000}>
+                    <ExampleCarouselImage src={item.src} alt={item.alt} />
                     <Carousel.Caption>
-                        <h3>{slide.title}</h3>
-                        <p>{slide.caption}</p>
+                        <h3>{item.caption}</h3>
+                        <p>{item.captionText}</p>
                     </Carousel.Caption>
                 </Carousel.Item>
             ))}
         </Carousel>
     );
-}
+};
 
 export default ImageCarousel;
