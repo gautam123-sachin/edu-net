@@ -1,14 +1,16 @@
 import React from 'react';
 import { Carousel } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useMediaQuery } from '@react-hook/media-query';
 
 const ExampleCarouselImage = ({ src, alt }) => {
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
     return (
         <img
             className="d-block w-100"
             src={src}
             alt={alt}
-            height={400}
+            height={isMobile ? 400 : 600}
         />
     );
 };

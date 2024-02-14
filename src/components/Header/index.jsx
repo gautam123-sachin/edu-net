@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -16,12 +16,11 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
 const drawerWidth = 100;
-// const navItems = ['Home', 'About', 'Contact'];
 const navItems = [{ label: 'Home', to: '/' }, { label: 'About', to: '/about' }, { label: 'Contact', to: '/contact' }, { label: 'Login', to: '/login' }];
 function Header(props) {
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
-
+    const location = useLocation();
     const handleDrawerToggle = () => {
         setMobileOpen((prevState) => !prevState);
     };
@@ -70,7 +69,7 @@ function Header(props) {
                     </Typography>
                     <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                         {navItems.map((item, index) => (
-                            <Button key={index} sx={{ color: '#fff' }} component={Link} to={item.to}>
+                            <Button key={index} sx={{ color: location.pathname === item.to ? '#000' : '#fff', fontWeight: location.pathname === item.to ? 'bold' : 'normal' }} component={Link} to={item.to}>
                                 {item.label}
                             </Button>
                         ))}

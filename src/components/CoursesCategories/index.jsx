@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Grid, Typography, Card, CardContent } from '@mui/material';
 
-const CourseCategoryItem = ({ imageSrc, title, courseCount }) => {
+const CourseCategoryItem = ({ id, imageSrc, title, courseCount, onClick }) => {
   return (
-    <Grid item xs={12} sm={6} md={4} lg={3} className="wow zoomIn">
+    <Grid item xs={12} sm={6} md={4} lg={3} className="wow zoomIn" key={id} onClick={() => onClick(id)}>
       <Card
         className="position-relative"
         sx={{
@@ -13,6 +13,7 @@ const CourseCategoryItem = ({ imageSrc, title, courseCount }) => {
             transform: 'scale(1.03)',
             boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
           },
+          cursor: 'pointer',
         }}
       >
         <img src={imageSrc} alt={title} className="img-fluid" style={{ objectFit: 'cover', height: '100%' }} />
@@ -26,6 +27,24 @@ const CourseCategoryItem = ({ imageSrc, title, courseCount }) => {
 };
 
 const CoursesCategories = () => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:5000/categories')
+      .then(response => response.json())
+      .then(data => {
+        setCategories(data);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+
+  const handleClick = (categoryId) => {
+    // Handle click event, e.g., redirect to a specific category page
+    console.log('Category clicked:', categoryId);
+  };
+
   return (
     <div className="container-xxl py-5 category">
       <div className="container">
@@ -34,10 +53,16 @@ const CoursesCategories = () => {
           <Typography variant="h3" className="mb-5">Courses Categories</Typography>
         </div>
         <Grid container spacing={3}>
-          <CourseCategoryItem imageSrc="cat-1.jpg" title="Web Design" courseCount={49} />
-          <CourseCategoryItem imageSrc="cat-2.jpg" title="Graphic Design" courseCount={49} />
-          <CourseCategoryItem imageSrc="cat-3.jpg" title="Video Editing" courseCount={49} />
-          <CourseCategoryItem imageSrc="cat-4.jpg" title="Online Marketing" courseCount={49} />
+          {categories.map(category => (
+            <CourseCategoryItem
+              key={category.id}
+              id={category.id}
+              imageSrc={category.imageSrc}
+              title={category.title}
+              courseCount={category.courseCount}
+              onClick={handleClick}
+            />
+          ))}
         </Grid>
       </div>
     </div>

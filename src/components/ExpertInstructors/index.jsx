@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Grid, Typography, Card, CardContent, IconButton } from '@mui/material';
 import { Facebook, Twitter, Instagram } from '@mui/icons-material';
 
-const InstructorItem = ({ imageSrc, name, designation }) => {
+const InstructorItem = ({ id, imageSrc, name, designation, socialMediaLinks }) => {
   return (
     <Grid item xs={12} sm={6} md={3} className="wow fadeInUp" data-wow-delay="0.1s">
       <Card
@@ -20,15 +20,11 @@ const InstructorItem = ({ imageSrc, name, designation }) => {
         </div>
         <div className="position-relative d-flex justify-content-center" style={{ marginTop: '-23px' }}>
           <div className="bg-light d-flex justify-content-center pt-2 px-1">
-            <IconButton color="primary" className="btn-sm-square mx-1">
-              <Facebook />
-            </IconButton>
-            <IconButton color="primary" className="btn-sm-square mx-1">
-              <Twitter />
-            </IconButton>
-            <IconButton color="primary" className="btn-sm-square mx-1">
-              <Instagram />
-            </IconButton>
+            {socialMediaLinks.map((link, index) => (
+              <IconButton color="primary" className="btn-sm-square mx-1" key={index} href={link} target="_blank">
+                {index === 0 ? <Facebook /> : index === 1 ? <Twitter /> : <Instagram />}
+              </IconButton>
+            ))}
           </div>
         </div>
         <CardContent className="text-center p-4">
@@ -41,6 +37,23 @@ const InstructorItem = ({ imageSrc, name, designation }) => {
 };
 
 const ExpertInstructors = () => {
+  const [instructors, setInstructors] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:5000/instructors')
+      .then(response => response.json())
+      .then(data => {
+        // Sort instructors by rating in descending order
+        const sortedInstructors = data.sort((a, b) => b.rating - a.rating);
+        // Slice the top 4 instructors
+        const topRatedInstructors = sortedInstructors.slice(0, 4);
+        setInstructors(topRatedInstructors);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+  
   return (
     <div className="container-xxl py-5">
       <div className="container">
@@ -49,10 +62,16 @@ const ExpertInstructors = () => {
           <Typography variant="h3" className="mb-5">Expert Instructors</Typography>
         </div>
         <Grid container spacing={4}>
-          <InstructorItem imageSrc="team-1.jpg" name="Instructor Name" designation="Designation" />
-          <InstructorItem imageSrc="team-2.jpg" name="Instructor Name" designation="Designation" />
-          <InstructorItem imageSrc="team-3.jpg" name="Instructor Name" designation="Designation" />
-          <InstructorItem imageSrc="team-4.jpg" name="Instructor Name" designation="Designation" />
+          {instructors.map(instructor => (
+            <InstructorItem
+              key={instructor.id}
+              id={instructor.id}
+              imageSrc={instructor.imageSrc}
+              name={instructor.name}
+              designation={instructor.designation}
+              socialMediaLinks={instructor.socialMediaLinks}
+            />
+          ))}
         </Grid>
       </div>
     </div>

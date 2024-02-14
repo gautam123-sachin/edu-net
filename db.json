@@ -35,5 +35,164 @@
       "email": "rrr@gmail.com",
       "password": "rrrrrrr"
     }
+  ],
+  "courses": [
+    {
+      "id": 1,
+      "imageSrc": "course-1.jpg",
+      "price": 149.00,
+      "rating": 4.5,
+      "title": "Web Design & Development Course for Beginners",
+      "instructor": "John Doe",
+      "duration": "1.49 Hrs",
+      "studentCount": 30
+    },
+    {
+      "id": 2,
+      "imageSrc": "course-2.jpg",
+      "price": 149.00,
+      "rating": 3.8,
+      "title": "Advanced JavaScript Programming",
+      "instructor": "Jane Smith",
+      "duration": "2.5 Hrs",
+      "studentCount": 25
+    },
+    {
+      "id": 3,
+      "imageSrc": "course-3.jpg",
+      "price": 199.00,
+      "rating": 4.2,
+      "title": "React Masterclass",
+      "instructor": "Adam Johnson",
+      "duration": "3 Hrs",
+      "studentCount": 35
+    },
+    {
+      "id": 4,
+      "imageSrc": "course-3.jpg",
+      "price": 129.00,
+      "rating": 4.7,
+      "title": "Python for Data Science",
+      "instructor": "Emily Wilson",
+      "duration": "2.5 Hrs",
+      "studentCount": 40
+    },
+    {
+      "id": 5,
+      "imageSrc": "course-3.jpg",
+      "price": 99.00,
+      "rating": 4.0,
+      "title": "Introduction to Machine Learning",
+      "instructor": "Michael Brown",
+      "duration": "2 Hrs",
+      "studentCount": 28
+    }
+  ],
+  "categories":[
+    {
+      "id": 1,
+      "title": "Web Design",
+      "imageSrc": "cat-1.jpg",
+      "courseCount": 49
+    },
+    {
+      "id": 2,
+      "title": "Graphic Design",
+      "imageSrc": "cat-2.jpg",
+      "courseCount": 32
+    },
+    {
+      "id": 3,
+      "title": "Video Editing",
+      "imageSrc": "cat-3.jpg",
+      "courseCount": 27
+    },
+    {
+      "id": 4,
+      "title": "Online Marketing",
+      "imageSrc": "cat-4.jpg",
+      "courseCount": 56
+    }
+  ],
+  "instructors": [
+
+    {
+      "id": 1,
+      "imageSrc": "team-1.jpg",
+      "rating": 4.7,
+      "name": "John Doe",
+      "designation": "Web Development Expert",
+      "socialMediaLinks": [
+        "https://www.facebook.com/johndoe",
+        "https://www.twitter.com/johndoe",
+        "https://www.instagram.com/johndoe"
+      ]
+    },
+    {
+      "id": 2,
+      "imageSrc": "team-2.jpg",
+      "rating": 4.8,
+      "name": "Jane Smith",
+      "designation": "Graphic Design Specialist",
+      "socialMediaLinks": [
+        "https://www.facebook.com/janesmith",
+        "https://www.twitter.com/janesmith",
+        "https://www.instagram.com/janesmith"
+      ]
+    },
+    {
+      "id": 3,
+      "imageSrc": "team-3.jpg",
+      "rating": 4.9,
+      "name": "Adam Johnson",
+      "designation": "Digital Marketing Guru",
+      "socialMediaLinks": [
+        "https://www.facebook.com/adamjohnson",
+        "https://www.twitter.com/adamjohnson",
+        "https://www.instagram.com/adamjohnson"
+      ]
+    },
+    {
+      "id": 4,
+      "imageSrc": "team-4.jpg",
+      "rating": 4.6,
+      "name": "Emily Wilson",
+      "designation": "Video Editor Expert",
+      "socialMediaLinks": [
+        "https://www.facebook.com/emilywilson",
+        "https://www.twitter.com/emilywilson",
+        "https://www.instagram.com/emilywilson"
+      ]
+    }
+  ],
+  "testimonials":[
+    {
+      "id": 1,
+      "name": "John Doe",
+      "profession": "Web Developer",
+      "testimonial": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "imageSrc": "team-1.jpg"
+    },
+    {
+      "id": 2,
+      "name": "Jane Smith",
+      "profession": "Graphic Designer",
+      "testimonial": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "imageSrc": "team-2.jpg"
+    },
+    {
+      "id": 3,
+      "name": "Alice Johnson",
+      "profession": "Software Engineer",
+      "testimonial": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+      "imageSrc": "team-3.jpg"
+    },
+    {
+      "id": 4,
+      "name": "Michael Brown",
+      "profession": "Marketing Coordinator",
+      "testimonial": "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      "imageSrc": "team-4.jpg"
+    }
   ]
 }

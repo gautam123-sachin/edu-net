@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Typography, Grid } from '@mui/material';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -6,7 +6,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
-const TestimonialItem = ({ imageSrc, name, profession, testimonial }) => {
+const TestimonialItem = ({ name, profession, testimonial, imageSrc }) => {
     return (
         <div className="testimonial-item text-center">
             <Grid container>
@@ -24,6 +24,19 @@ const TestimonialItem = ({ imageSrc, name, profession, testimonial }) => {
 };
 
 const OurStudentsSay = () => {
+    const [testimonials, setTestimonials] = useState([]);
+
+    useEffect(() => {
+        fetch('http://localhost:5000/testimonials')
+            .then(response => response.json())
+            .then(data => {
+                setTestimonials(data);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }, []);
+
     const settingsDesktop = {
         dots: true,
         infinite: true,
@@ -57,18 +70,28 @@ const OurStudentsSay = () => {
                 </div>
                 <div className="d-none d-md-block"> {/* Show only on desktop */}
                     <Slider {...settingsDesktop}>
-                        <TestimonialItem imageSrc="course-1.jpg" name="Client Name" profession="Profession" testimonial="Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit." />
-                        <TestimonialItem imageSrc="course-1.jpg" name="Client Name" profession="Profession" testimonial="Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit." />
-                        <TestimonialItem imageSrc="course-1.jpg" name="Client Name" profession="Profession" testimonial="Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit." />
-                        <TestimonialItem imageSrc="course-1.jpg" name="Client Name" profession="Profession" testimonial="Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit." />
+                        {testimonials.map(testimonial => (
+                            <TestimonialItem
+                                key={testimonial.id}
+                                name={testimonial.name}
+                                profession={testimonial.profession}
+                                testimonial={testimonial.testimonial}
+                                imageSrc={testimonial.imageSrc}
+                            />
+                        ))}
                     </Slider>
                 </div>
                 <div className="d-md-none"> {/* Show only on mobile */}
                     <Slider {...settingsMobile}>
-                        <TestimonialItem imageSrc="course-1.jpg" name="Client Name" profession="Profession" testimonial="Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit." />
-                        <TestimonialItem imageSrc="course-1.jpg" name="Client Name" profession="Profession" testimonial="Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit." />
-                        <TestimonialItem imageSrc="course-1.jpg" name="Client Name" profession="Profession" testimonial="Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit." />
-                        <TestimonialItem imageSrc="course-1.jpg" name="Client Name" profession="Profession" testimonial="Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit." />
+                        {testimonials.map(testimonial => (
+                            <TestimonialItem
+                                key={testimonial.id}
+                                name={testimonial.name}
+                                profession={testimonial.profession}
+                                testimonial={testimonial.testimonial}
+                                imageSrc={testimonial.imageSrc}
+                            />
+                        ))}
                     </Slider>
                 </div>
             </div>

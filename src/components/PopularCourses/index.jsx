@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Grid, Typography, Card, CardContent, Button } from '@mui/material';
 import { Rating } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
@@ -47,21 +47,53 @@ console.log(hovered);
 };
 
 const PopularCourses = () => {
-    return (
-      <div className="container-xxl py-5">
-        <div className="container">
-          <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
-            <Typography variant="h6" className="section-title bg-white text-center text-primary px-3">Courses</Typography>
-            <Typography variant="h3" className="mb-5">Popular Courses</Typography>
-          </div>
-          <Grid container spacing={4} justifyContent="center">
-            <PopularCourseItem imageSrc="course-1.jpg" price="149.00" rating={4.5} title="Web Design & Development Course for Beginners" instructor="John Doe" duration="1.49 Hrs" studentCount={30} />
-            <PopularCourseItem imageSrc="course-2.jpg" price="149.00" rating={3.8} title="Web Design & Development Course for Beginners" instructor="John Doe" duration="1.49 Hrs" studentCount={30} />
-            <PopularCourseItem imageSrc="course-3.jpg" price="149.00" rating={4.2} title="Web Design & Development Course for Beginners" instructor="John Doe" duration="1.49 Hrs" studentCount={30} />
-          </Grid>
+  const [courses, setCourses] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:5000/courses')
+      .then(response => response.json())
+      .then(data => {
+        // Sort courses by rating and student count
+        const sortedCourses = data.sort((a, b) => {
+          // Sort by rating in descending order
+          if (a.rating !== b.rating) {
+            return b.rating - a.rating;
+          }
+          // If ratings are the same, sort by student count in descending order
+          return b.studentCount - a.studentCount;
+        });
+        // Slice the top three courses
+        const topThreeCourses = sortedCourses.slice(0, 3);
+        setCourses(topThreeCourses);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+  return (
+    <div className="container-xxl py-5">
+      <div className="container">
+        <div className="text-center wow fadeInUp" data-wow-delay="0.1s">
+          <Typography variant="h6" className="section-title bg-white text-center text-primary px-3">Courses</Typography>
+          <Typography variant="h3" className="mb-5">Popular Courses</Typography>
         </div>
+        <Grid container spacing={4} justifyContent="center">
+          {courses.map(course => (
+            <PopularCourseItem
+              key={course.id}
+              imageSrc={course.imageSrc}
+              price={course.price}
+              rating={course.rating}
+              title={course.title}
+              instructor={course.instructor}
+              duration={course.duration}
+              studentCount={course.studentCount}
+            />
+          ))}
+        </Grid>
       </div>
-    );
+    </div>
+  );
 };
 
 export default PopularCourses;

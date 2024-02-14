@@ -16,7 +16,7 @@ const Footer = () => {
         <Grid container spacing={5}>
           <Grid item xs={12} md={3}>
             <Typography variant="h4" className="text-white mb-3">Quick Links</Typography>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', cursor:'pointer'}}>
               <span className="btn-link"><ChevronRightIcon /> About Us</span>
               <span className="btn-link"><ChevronRightIcon /> Contact Us</span>
               <span className="btn-link"><ChevronRightIcon /> Privacy Policy</span>
@@ -65,7 +65,7 @@ const Footer = () => {
       <Container>
         <div className="copyright">
           <Grid container>
-            <Grid item xs={12} md={6} className="text-center text-md-start mb-3 mb-md-0">
+            <Grid item xs={12} md={6} sx={{ display: 'flex', marginTop: '10px'}} className="text-center text-md-start mb-3 mb-md-0">
               <Typography variant="body2">&copy; Edu-Net.com, All Rights Reserved.</Typography>
               <Typography variant="body2">Designed By WebMobi Solutions</Typography>
             </Grid>
