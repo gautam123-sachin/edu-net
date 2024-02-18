@@ -51,7 +51,8 @@ const Login = () => {
     const handleLogin = async () => {
         if (validateFormData()) {
             try {
-                const response = await axios.get(`http://localhost:5000/users?email=${formData.email}&password=${formData.password}`);
+                const response = await axios.get('https://my-json-server.typicode.com/gautam123-sachin/edunet/users?email=${formData.email}&password=${formData.password}');
+                // const response = await axios.get(`http://localhost:5000/users?email=${formData.email}&password=${formData.password}`);
                 if (response.data.length === 1) {
                     // Login successful
                     dispatch(login(response.data[0]));
