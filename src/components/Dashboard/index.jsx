@@ -27,11 +27,14 @@ import { logout } from '../../redux/reducers/authReducer.jsx';
 import EWallet from './EWallet/index.jsx';
 import Network from './NetWork/index.jsx';
 import Profile from '../Profile/index.jsx';
-import Sidebar from '../Sidebar/index.jsx';
 import GoLive from '../Profile/GoLive.jsx';
+import Courses from './Courses/index.jsx';
+import AllCourse from './AllCourse/index.jsx';
 
 const drawerWidth = 100;
 const navItems = [
+    { label: 'Your Courses', to: "/dashboard/your-courses" },
+    { label: 'All Courses', to: "/dashboard/all-courses" },
     { label: 'NetWork', to: "/dashboard/network" },
     { label: 'E-Wallet', to: "/dashboard/e-wallet" }
 ];
@@ -163,22 +166,20 @@ function Dashboard(props) {
                         </Box>
                     </Drawer>
                 </nav>
-                <Box component="main" sx={isMobile ? { p: 3 } : { paddingLeft: '250px', paddingTop: '20px', marginBottom:'10px' }}>
+                <Box component="main" sx={isMobile ? { p: 3 } : { paddingLeft: '150px', paddingTop: '20px', marginBottom: '10px' }}>
                     <Toolbar />
                     <Routes>
-                        <Route path="network" element={<Network />} />
-                        <Route path="e-wallet" element={<EWallet />} />
-                        <Route path="profile" element={<Profile />} />
-                        <Route path="go-live" element={<GoLive />} />
+                        <Route path="/network" element={<Network />} />
+                        <Route path="/e-wallet" element={<EWallet />} />
+                        <Route path="/profile" element={<Profile user={user} />} />
+                        <Route path="/go-live" element={<GoLive />} />
+                        <Route path="/your-courses" element={<Courses user={user} />} />
+                        <Route path="all-courses" element={<AllCourse user={user} />} />
                     </Routes>
                 </Box>
             </Box>
-            {isMobile ? null : <Sidebar />}
-            {/* <Sidebar /> */}
         </>
     );
 }
 
 export default Dashboard;
-
-

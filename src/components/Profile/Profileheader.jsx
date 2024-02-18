@@ -10,10 +10,18 @@ import {
   Avatar,
   Button
 } from '@mui/material';
+import EditForm from "./EditForm.jsx";
 
 const Profileheader = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const [open, setOpen] = React.useState(false);
+  const handleEdit = () => {
+    setOpen(true);
+  }
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <Grid container spacing={2} >
@@ -49,14 +57,18 @@ const Profileheader = () => {
                     </li>
                   </ul>
                 </div>
-                <Button variant="contained" color="primary" startIcon={<i className="mdi mdi-account-check-outline me-1"></i>}>Connected</Button>
+                <Button variant="contained" color="primary" startIcon={<i className="mdi mdi-account-check-outline me-1"></i>} onClick={handleEdit}>Edit</Button>
+                <EditForm
+                  open={open}
+                  onClose={handleClose}
+                />
               </div>
             </div>
           </CardContent>
         </Card>
       </Grid>
     </Grid>
-    
+
   );
 };
 

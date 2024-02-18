@@ -34,13 +34,27 @@
       "lastname": "Solutions",
       "email": "rrr@gmail.com",
       "password": "rrrrrrr"
+    },
+    {
+      "id": "1131",
+      "firstname": "Sachin",
+      "lastname": "Gautam",
+      "email": "sachin84@gmail.com",
+      "password": "123456"
+    },
+    {
+      "id": "4dbb",
+      "firstname": "vvvv",
+      "lastname": "vvvv",
+      "email": "vvv@gmail.com",
+      "password": "vvvvv"
     }
   ],
   "courses": [
     {
-      "id": 1,
+      "id": "1",
       "imageSrc": "course-1.jpg",
-      "price": 149.00,
+      "price": 149,
       "rating": 4.5,
       "title": "Web Design & Development Course for Beginners",
       "instructor": "John Doe",
@@ -48,9 +62,9 @@
       "studentCount": 30
     },
     {
-      "id": 2,
+      "id": "2",
       "imageSrc": "course-2.jpg",
-      "price": 149.00,
+      "price": 149,
       "rating": 3.8,
       "title": "Advanced JavaScript Programming",
       "instructor": "Jane Smith",
@@ -58,9 +72,9 @@
       "studentCount": 25
     },
     {
-      "id": 3,
+      "id": "3",
       "imageSrc": "course-3.jpg",
-      "price": 199.00,
+      "price": 199,
       "rating": 4.2,
       "title": "React Masterclass",
       "instructor": "Adam Johnson",
@@ -68,9 +82,9 @@
       "studentCount": 35
     },
     {
-      "id": 4,
+      "id": "4",
       "imageSrc": "course-3.jpg",
-      "price": 129.00,
+      "price": 129,
       "rating": 4.7,
       "title": "Python for Data Science",
       "instructor": "Emily Wilson",
@@ -78,46 +92,89 @@
       "studentCount": 40
     },
     {
-      "id": 5,
+      "id": "5",
       "imageSrc": "course-3.jpg",
-      "price": 99.00,
-      "rating": 4.0,
+      "price": 99,
+      "rating": 4,
       "title": "Introduction to Machine Learning",
       "instructor": "Michael Brown",
       "duration": "2 Hrs",
       "studentCount": 28
+    },
+    {
+      "id": "e895",
+      "teacherId": "glrulz29j",
+      "title": "test",
+      "description": "test    ",
+      "teacher": "WebMobi Solutions ",
+      "categories": [
+        "Backend"
+      ],
+      "videoFile": {}
+    },
+    {
+      "id": "fcb0",
+      "teacherId": "4zd8m48ra",
+      "title": "test",
+      "description": "test",
+      "teacher": "WebMobi Solutionss",
+      "categories": [
+        "Backend"
+      ],
+      "videoFile": {}
+    },
+    {
+      "id": "e9ee",
+      "teacherId": "4zd8m48ra",
+      "title": "test",
+      "description": "test",
+      "teacher": "WebMobi Solutionss",
+      "categories": [
+        "Backend"
+      ],
+      "videoFile": {}
+    },
+    {
+      "id": "4226",
+      "teacherId": "gzkj6ypl4",
+      "title": "test",
+      "description": "test",
+      "teacher": "WebMobi Solutions ",
+      "categories": [
+        "Frontend"
+      ],
+      "videoFile": {}
     }
   ],
-  "categories":[
+  "categories": [
     {
-      "id": 1,
+      "id": "1",
       "title": "Web Design",
       "imageSrc": "cat-1.jpg",
       "courseCount": 49
     },
     {
-      "id": 2,
+      "id": "2",
       "title": "Graphic Design",
       "imageSrc": "cat-2.jpg",
       "courseCount": 32
     },
     {
-      "id": 3,
+      "id": "3",
       "title": "Video Editing",
       "imageSrc": "cat-3.jpg",
       "courseCount": 27
     },
     {
-      "id": 4,
+      "id": "4",
       "title": "Online Marketing",
       "imageSrc": "cat-4.jpg",
       "courseCount": 56
     }
   ],
   "instructors": [
-
     {
-      "id": 1,
+      "id": "1",
       "imageSrc": "team-1.jpg",
       "rating": 4.7,
       "name": "John Doe",
@@ -129,7 +186,7 @@
       ]
     },
     {
-      "id": 2,
+      "id": "2",
       "imageSrc": "team-2.jpg",
       "rating": 4.8,
       "name": "Jane Smith",
@@ -141,7 +198,7 @@
       ]
     },
     {
-      "id": 3,
+      "id": "3",
       "imageSrc": "team-3.jpg",
       "rating": 4.9,
       "name": "Adam Johnson",
@@ -153,7 +210,7 @@
       ]
     },
     {
-      "id": 4,
+      "id": "4",
       "imageSrc": "team-4.jpg",
       "rating": 4.6,
       "name": "Emily Wilson",
@@ -165,30 +222,30 @@
       ]
     }
   ],
-  "testimonials":[
+  "testimonials": [
     {
-      "id": 1,
+      "id": "1",
       "name": "John Doe",
       "profession": "Web Developer",
       "testimonial": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       "imageSrc": "team-1.jpg"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Jane Smith",
       "profession": "Graphic Designer",
       "testimonial": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       "imageSrc": "team-2.jpg"
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Alice Johnson",
       "profession": "Software Engineer",
       "testimonial": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
       "imageSrc": "team-3.jpg"
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "Michael Brown",
       "profession": "Marketing Coordinator",
       "testimonial": "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",

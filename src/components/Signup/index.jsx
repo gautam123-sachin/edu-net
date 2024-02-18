@@ -66,7 +66,7 @@ const Signup = () => {
                 if (response) {
                     setOpenSnackbar(true);
                     setSnackbarMessage('Signup successful!');
-                    navigate('/dashboard');
+                    navigate('/membership');
                     setFormData({
                         firstname: '',
                         lastname: '',
