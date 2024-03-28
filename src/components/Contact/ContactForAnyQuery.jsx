@@ -112,7 +112,16 @@ const ContactForAnyQuery = () => {
                 </div>
                 <div className="ms-3">
                   <h5 className="text-primary">Office</h5>
-                  <p className="mb-0">123 Street, New York, USA</p>
+                  <a href="https://www.google.com/maps?q=456+Main+Road,+Ludhiana,+Punjab,+India"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      textDecoration: 'none',
+                      color: 'black',
+                    }}
+                  >
+                    <p className="mb-0">456 Main Road, Ludhiana, Punjab, India</p>
+                  </a>
                 </div>
               </div>
               <div className="d-flex align-items-center mb-3">
@@ -121,7 +130,9 @@ const ContactForAnyQuery = () => {
                 </div>
                 <div className="ms-3">
                   <h5 className="text-primary">Mobile</h5>
-                  <p className="mb-0">+012 345 67890</p>
+                  <p className="mb-0">
+                    <a href="tel:+919888911531" style={{ textDecoration: 'none', color: 'black' }}>+91 988-891-1531</a>
+                  </p>
                 </div>
               </div>
               <div className="d-flex align-items-center">
@@ -130,8 +141,10 @@ const ContactForAnyQuery = () => {
                 </div>
                 <div className="ms-3">
                   <h5 className="text-primary">Email</h5>
-                  <p className="mb-0">info@example.com</p>
-                </div>
+                  <p className="mb-0">
+                    <a href="mailto:oneplacetogether0@gmail.com" style={{ textDecoration: 'none', color: 'black' }}>oneplacetogether0@gmail.com</a>
+                  </p>
+                </div>  
               </div>
             </div>
           </Grid>
@@ -228,7 +241,7 @@ const ContactForAnyQuery = () => {
           anchorOrigin={{
             vertical: 'top',
             horizontal: 'center',
-        }}
+          }}
         />
       </div>
     </div>

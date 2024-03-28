@@ -13,15 +13,15 @@ const WelcomeToElearning = () => {
         </Grid>
         <Grid item xs={12} lg={6}>
           <Typography variant="h6" className="section-title bg-white text-start text-primary" sx={{ py: 1, px: 3 }}>About Us</Typography>
-          <Typography variant="h3" gutterBottom>Edu Net with Learning with Earning</Typography>
+          <Typography variant="h3" gutterBottom> One place together with Learning with Earning</Typography>
           <Typography variant="body1" paragraph>
-            Edu Net with Learning with Earning is an innovative platform that allows you to learn new skills while earning money. 
+            One place together with Learning with Earning is an innovative platform that allows you to learn new skills while earning money. 
             Our mission is to provide accessible education to everyone, regardless of their background or financial status.
           </Typography>
           <Typography variant="body1" paragraph>
             With our platform, you can enroll in various online courses taught by skilled instructors, participate in interactive classes, 
             and earn rewards for your achievements. Whether you want to enhance your skills for personal development or pursue a new career path, 
-            Edu Net with Learning with Earning has something for everyone.
+            One place together with Learning with Earning has something for everyone.
           </Typography>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>

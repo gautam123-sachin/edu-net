@@ -132,33 +132,33 @@ export function generateReferralCode() {
     }
   ];
 
-export const testimonials = [
+  export const testimonials = [
     {
         "id": "1",
-        "name": "John Doe",
+        "name": "Rahul Sharma",
         "profession": "Web Developer",
-        "testimonial": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "testimonial": "One place together with Learning with Earning is an amazing platform. It helped me learn new skills and earn money at the same time. Highly recommended!",
         "imageSrc": "team-1.jpg"
     },
     {
         "id": "2",
-        "name": "Jane Smith",
+        "name": "Priya Patel",
         "profession": "Graphic Designer",
-        "testimonial": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "testimonial": "I absolutely love One place together with Learning with Earning! The courses are well-structured, the instructors are knowledgeable, and the platform is easy to navigate.",
         "imageSrc": "team-2.jpg"
     },
     {
         "id": "3",
-        "name": "Alice Johnson",
+        "name": "Amit Kumar",
         "profession": "Software Engineer",
-        "testimonial": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+        "testimonial": "As a software engineer, I'm always looking to expand my skillset. One place together with Learning with Earning provided me with the perfect opportunity to do so. Great platform!",
         "imageSrc": "team-3.jpg"
     },
     {
         "id": "4",
-        "name": "Michael Brown",
+        "name": "Ananya Gupta",
         "profession": "Marketing Coordinator",
-        "testimonial": "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "testimonial": "Learning with Earning has been a game-changer for me. Not only did I acquire new skills, but I also earned rewards for my achievements. Couldn't be happier!",
         "imageSrc": "team-4.jpg"
     }
 ];

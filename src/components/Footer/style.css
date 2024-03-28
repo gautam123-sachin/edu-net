@@ -1,0 +1,44 @@
+footer {
+    display: flex;
+    flex-direction: column;
+    gap: 2;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    border-top: 1px solid #ccc;
+  }
+  
+  @media (min-width: 600px) {
+    footer {
+      flex-direction: row;
+    }
+  }
+  
+  @media (min-width: 960px) {
+    footer {
+      padding: 32px;
+    }
+  }
+  
+  footer p {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  footer nav {
+    display: flex;
+    gap: 20px;
+    justify-content: flex-end; /* Updated property */
+  }
+  
+  footer nav a {
+    font-size: 14px;
+    color: #666;
+    text-decoration: none;
+  }
+  
+  footer nav a:hover {
+    text-decoration: underline;
+  }
+  
