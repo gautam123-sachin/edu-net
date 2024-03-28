@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     TextField,
     Button,
@@ -14,19 +14,33 @@ import {
 import { loadStripe } from '@stripe/stripe-js';
 import axios from 'axios';
 
-const MembershipForm = () => {
+import { generateReferralCode } from '../../Helper.jsx';
+
+import './style.css';
+
+const MembershipForm = ({ user }) => {
+    const yourReferralCode = generateReferralCode();
+    const { firstname, lastname, email } = user.user;
     const [formData, setFormData] = useState({
-        name: '',
+        name: `${firstname} ${lastname}`,
         address: '',
         phone: '',
-        email: '',
+        email: email,
         referralCode: '',
         position: 'left',
         amount: 299,
         paymentMethod: 'card',
-        currency: 'INR'
+        currency: 'INR',
+        yourReferralCode: yourReferralCode,
     });
     const [errors, setErrors] = useState({});
+
+    useEffect(() => {
+        document.body.classList.add('membership-bg');
+        return () => {
+            document.body.classList.remove('membership-bg');
+        };
+    }, []);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -39,7 +53,7 @@ const MembershipForm = () => {
         if (validateForm()) {
             const stripe = await loadStripe('pk_test_51OGEyFSDrJBc0PMT7YnkTkPKV4BAlhVEcsd5xvqeyB8GHuC8cNLzJTT4VhbBu0BH4aQYiEZcupUHw2JT7QSggTNG001fwkfnAI');
             try {
-                const response = await axios.post('http://localhost:8000/api/membership/payment', formData, {
+                const response = await axios.post('http://localhost:8000/v1/membership/payment', formData, {
                     withCredentials: true,
                 });
                 const { sessionId } = response.data;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Grid,
     Box,
@@ -13,7 +13,6 @@ import {
     useMediaQuery
 } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
-
 import AllMembers from "./AllMembers";
 import RefernalMember from "./RefernalMember";
 import DownlineMembers from "./DownlineMembers";
@@ -53,6 +52,23 @@ const NetWork = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const [activeTab, setActiveTab] = useState('RefernalMembers');
+    const [membersData, setMembersData] = useState([]);
+
+    useEffect(() => {
+        // Fetch data from API based on active tab
+        fetchData(activeTab);
+    }, [activeTab]);
+
+    const fetchData = async (tab) => {
+        try {
+            // Make API call based on the tab and set the data to state
+            const response = await fetch(`API_URL/${tab}`);
+            const data = await response.json();
+            setMembersData(data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
 
     const handleTabChange = (tab) => {
         setActiveTab(tab);
@@ -64,8 +80,8 @@ const NetWork = () => {
                 return <RefernalMember />;
             case 'DownlineMembers':
                 return <DownlineMembers />;
-                case 'AllMembers':
-                    return <AllMembers />;
+            case 'AllMembers':
+                return <AllMembers />;
             default:
                 return <RefernalMember />;
         }

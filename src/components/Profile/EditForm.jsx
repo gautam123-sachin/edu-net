@@ -8,6 +8,7 @@ import {
     Button,
     Avatar
 } from '@mui/material';
+import axios from 'axios';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { styled } from '@mui/material/styles';
 
@@ -23,14 +24,14 @@ const VisuallyHiddenInput = styled('input')({
     width: 1,
 });
 
-const EditForm = ({ open, onClose }) => {
+const EditForm = ({ open, onClose, user }) => {
     const [formData, setFormData] = useState({
-        firstname: '',
-        lastname: '',
-        address: '',
-        phone: '',
-        email: '',
-        file: null
+        firstname: user.firstname || '',
+        lastname: user.lastname || '',
+        address: user.address || '',
+        phone: user.phone || '',
+        email: user.email || '',
+        file: null,
     });
     const [errors, setErrors] = useState({});
 
@@ -38,8 +39,13 @@ const EditForm = ({ open, onClose }) => {
         onClose();
     };
 
-    const handleCreate = () => {
-        // Add logic for creating the form data
+    const handleUpdate = async () => {
+        try {
+            const response = await axios.put(`http://localhost:8000/v1/put-user/${user._id}`, formData);
+            console.log('User updated successfully:', response.data);
+        } catch (error) {
+            console.error('Error updating user:', error);
+        }
     };
 
     const validateForm = () => {
@@ -80,15 +86,23 @@ const EditForm = ({ open, onClose }) => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
-        setErrors({ ...errors, [name]: '' }); // Clear error message when the field changes
+        setErrors({ ...errors, [name]: '' });
     };
 
     const handleSubmit = () => {
         const isValid = validateForm();
         if (isValid) {
-            handleCreate();
+            handleUpdate();
         }
     };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        setFormData({ ...formData, file });
+        setErrors({ ...errors, file: '' });
+    }
+
+    const staticImage = "https://demos.themeselection.com/materio-bootstrap-html-admin-template/assets/img/avatars/1.png";
 
     return (
         <Dialog open={open} onClose={onClose}>
@@ -96,22 +110,28 @@ const EditForm = ({ open, onClose }) => {
             <DialogContent>
                 <div className="flex-shrink-0 mt-n2 mx-lg-0 mx-auto">
                     <Avatar
-                        src="https://demos.themeselection.com/materio-bootstrap-html-admin-template/assets/img/avatars/1.png"
+                        src={formData.file ? URL.createObjectURL(formData.file) : staticImage}
                         sx={{ width: 145 }}
                         alt="user image"
                         className="d-block h-auto ms-0 ms-sm-4 rounded user-profile-img"
                     />
-                    <Button
-                        component="label"
-                        role={undefined}
-                        variant="contained"
-                        tabIndex={-1}
-                        sx={{ marginLeft: '20px', marginTop: '14px' }}
-                        startIcon={<CloudUploadIcon />}
-                    >
-                        Upload file
-                        <VisuallyHiddenInput type="file" />
-                    </Button>
+                    <label htmlFor="file-upload-button">
+                        <Button
+                            component="span"
+                            role={undefined}
+                            variant="contained"
+                            tabIndex={-1}
+                            sx={{ marginLeft: '20px', marginTop: '14px' }}
+                            startIcon={<CloudUploadIcon />}
+                        >
+                            Upload file
+                        </Button>
+                        <VisuallyHiddenInput
+                            id="file-upload-button"
+                            type="file"
+                            onChange={handleFileChange}
+                        />
+                    </label>
                 </div>
                 <TextField
                     autoFocus
@@ -125,7 +145,7 @@ const EditForm = ({ open, onClose }) => {
                     onChange={handleChange}
                     error={!!errors.firstname}
                     helperText={errors.firstname}
-                    inputProps={{maxLength: 20}}
+                    inputProps={{ maxLength: 20 }}
                 />
                 <TextField
                     autoFocus
@@ -139,7 +159,7 @@ const EditForm = ({ open, onClose }) => {
                     onChange={handleChange}
                     error={!!errors.lastname}
                     helperText={errors.lastname}
-                    inputProps={{maxLength: 20}}
+                    inputProps={{ maxLength: 20 }}
                 />
                 <TextField
                     autoFocus
@@ -153,7 +173,7 @@ const EditForm = ({ open, onClose }) => {
                     onChange={handleChange}
                     error={!!errors.address}
                     helperText={errors.address}
-                    inputProps={{maxLength: 300}}
+                    inputProps={{ maxLength: 300 }}
                 />
                 <TextField
                     autoFocus
@@ -167,7 +187,7 @@ const EditForm = ({ open, onClose }) => {
                     onChange={handleChange}
                     error={!!errors.phone}
                     helperText={errors.phone}
-                    inputProps={{maxLength: 12}}
+                    inputProps={{ maxLength: 12 }}
                 />
                 <TextField
                     autoFocus
@@ -181,13 +201,13 @@ const EditForm = ({ open, onClose }) => {
                     onChange={handleChange}
                     error={!!errors.email}
                     helperText={errors.email}
-                    inputProps={{maxLength: 50}}
+                    inputProps={{ maxLength: 50 }}
                 />
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
                 <Button onClick={handleSubmit} color="primary">
-                    Create
+                    Update
                 </Button>
             </DialogActions>
         </Dialog>

@@ -6,6 +6,8 @@ import 'slick-carousel/slick/slick-theme.css';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
+import { testimonials } from '../../Helper.jsx';
+
 const TestimonialItem = ({ name, profession, testimonial, imageSrc }) => {
     return (
         <div className="testimonial-item text-center">
@@ -24,18 +26,6 @@ const TestimonialItem = ({ name, profession, testimonial, imageSrc }) => {
 };
 
 const OurStudentsSay = () => {
-    const [testimonials, setTestimonials] = useState([]);
-
-    useEffect(() => {
-        fetch('http://localhost:5000/testimonials')
-            .then(response => response.json())
-            .then(data => {
-                setTestimonials(data);
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-            });
-    }, []);
 
     const settingsDesktop = {
         dots: true,

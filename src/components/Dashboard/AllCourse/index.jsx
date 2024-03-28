@@ -1,138 +1,138 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-    Grid,
-    Card,
-    Typography,
-    CardContent,
-    Divider,
     Box,
+    Typography,
+    Button,
+    Divider,
+    TextField,
     useTheme,
     useMediaQuery,
-    Button,
-    Pagination,
-    TextField
+    Grid,
+    Card,
+    CardContent,
+    Rating,
+    Snackbar,
+    Alert as MuiAlert
 } from '@mui/material';
-import Rating from '@mui/material/Rating';
-import VideoCreate from '../../Profile/VideoCreate';
-import Courses1 from '../../../assets/Courses.png';
+import { Link } from 'react-router-dom';
+import { truncateText } from '../../../Helper.jsx';
 
-const AllCourse = () => {
+const AllCourse = ({ user }) => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const [loading, setLoading] = useState(true);
+    const [courses, setCourses] = useState([]);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+    const [snackbarMessage, setSnackbarMessage] = useState('');
 
-    // Sample data for courses
-    const courses = [
-        {
-            id: 1,
-            title: "Become a PHP Master and Make Money",
-            image: Courses1,
-            teacher: "Keny White",
-            categories: ["Backend"],
-            reviews: 3,
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            rating: 3
-        },
-        // Add more courses here
-    ];
+    useEffect(() => {
+        const fetchCourses = async () => {
+            try {
+                const response = await fetch('http://localhost:8000/v1/courses-list');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch courses');
+                }
+                const data = await response.json();
+                console.log('data', data);
+                setCourses(data);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching courses:', error.message);
+                setSnackbarSeverity('error');
+                setSnackbarMessage('Failed to fetch courses');
+                setSnackbarOpen(true);
+                setLoading(false);
+            }
+        };
 
-    const [page, setPage] = useState(1);
-    const [open, setOpen] = useState(false);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [enrolledCourses, setEnrolledCourses] = useState([]);
+        fetchCourses();
+    }, []);
 
-    const handleAddCourse = () => {
-        setOpen(true);
-    }
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const coursesPerPage = 6;
-
-    const handleChangePage = (event, value) => {
-        setPage(value);
-    };
-
-    const handleEnroll = (courseId) => {
-        const courseToAdd = courses.find(course => course.id === courseId);
-        setEnrolledCourses([...enrolledCourses, courseToAdd]);
-    };
-
-    const isEnrolled = (courseId) => {
-        return enrolledCourses.some(course => course.id === courseId);
-    };
-
-    const filteredCourses = courses.filter(course => {
-        return course.title.toLowerCase().includes(searchTerm.toLowerCase());
-    });
-
-    const startIndex = (page - 1) * coursesPerPage;
-    const endIndex = startIndex + coursesPerPage;
-    const paginatedCourses = filteredCourses.slice(startIndex, endIndex);
-
-    const handleSearchInput = (event) => {
-        setSearchTerm(event.target.value);
-    };
-
-    const handleSearch = () => {
-        setPage(1); 
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
     };
 
     return (
-        <main>
-            <Box py={4} px={2} maxWidth="lg" margin="auto">
-                <Box display="flex" alignItems="center" mb={2}>
-                    <Typography variant="h4" component="h4" mr={1}>Courses</Typography>
-                    <div style={{ marginLeft: 'auto' }}>
-                        <TextField type="text" label="Search" size='small' onChange={handleSearchInput} />
-                        <Button variant="contained" color="primary" sx={{ marginLeft: '10px' }} onClick={handleSearch}>Search</Button>
-                    </div>
+        <>
+            <main style={isMobile ? {} : { width: '1064px' }}>
+                <Box py={4} px={2} maxWidth="lg" margin="auto">
+                    <Box display="flex" alignItems="center" mb={2}>
+                        <Typography variant="h4" component="h4" mr={1}>All Courses</Typography>
+                    </Box>
+                    <Divider style={{ fontWeight: 'bold', borderColor: '#030404' }} />
+                    <Box mt={2} mb={2}>
+                        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                            <TextField type="text" label="Search" size='small' />
+                            <Button variant="contained" color="primary" sx={{ marginLeft: '10px' }}>Search</Button>
+                        </div>
+                    </Box>
+                    <Divider style={{ fontWeight: 'bold', borderColor: '#030404' }} />
+                    <Grid container spacing={2} sx={{ paddingLeft: '25px', paddingTop: '17px' }}>
+                        {loading ? (
+                            <Typography>Loading...</Typography>
+                        ) : courses.length === 0 ? (
+                            <Typography>No courses available.</Typography>
+                        ) : (
+                            courses.map((course, index) => (
+                                <Grid key={index} item xs={12} md={6} lg={4}>
+                                    <Card
+                                        sx={{
+                                            height: '100%',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            backgroundColor: '#f5f5f5'
+                                        }}
+                                    >
+                                        <CardContent>
+                                            <Typography gutterBottom variant="body1">{truncateText(course.title, 40)}</Typography>
+                                            <Divider style={{ fontWeight: 'bold', borderColor: '#030404' }} />
+                                            <Box mt={2} mb={2}>
+                                                {course.thumbnailUrl && <img src={course.thumbnailUrl} alt={course.title} style={{ width: '100%', height: '200px', objectFit: 'cover' }} />}
+                                            </Box>
+                                            <Box mb={2}>
+                                                {course.teacher && <Typography gutterBottom variant="subtitle1">Teacher: {course.teacher}</Typography>}
+                                                {course.categories && <Typography gutterBottom variant="subtitle1">Categories: {course.categories}</Typography>}
+                                                {course.reviews && <Typography gutterBottom variant="subtitle1">Reviews: {course.reviews}</Typography>}
+                                                {course.rating && <Rating name={`rating-${index}`} value={course.rating} readOnly />}
+                                            </Box>
+                                            <Divider style={{ fontWeight: 'bold', borderColor: '#030404' }} />
+                                            <Box mt={2}>
+                                                {course.description && <Typography variant="body2" color="textSecondary">{truncateText(course.description, 70)}</Typography>}
+                                            </Box>
+                                        </CardContent>
+                                        <Box mt="auto" p={2}>
+                                            <Box display="flex" justifyContent="center" alignItems="center">
+                                                <Button component={Link} to={`/dashboard/courses-details/${course.id}`} variant="contained" color="primary" size="small" className="radius-xl">View Course</Button>
+                                            </Box>
+                                        </Box>
+                                    </Card>
+                                </Grid>
+                            ))
+                        )}
+                    </Grid>
                 </Box>
-                <Grid container spacing={2}>
-                    {paginatedCourses.map((course, index) => (
-                        <Grid key={index} item xs={12} md={6} lg={4}>
-                            <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                                <CardContent>
-                                    <Typography gutterBottom variant="h5" component="h2">{course.title}</Typography>
-                                    <Divider style={{ fontWeight: 'bold', borderColor: '#030404' }} />
-                                    <Box mt={2} mb={2}>
-                                        <img src={course.image} alt="Course" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                    </Box>
-                                    <Box mb={2}>
-                                        <Typography gutterBottom variant="subtitle1">Teacher: {course.teacher}</Typography>
-                                        <Typography gutterBottom variant="subtitle1">Categories: {course.categories.join(', ')}</Typography>
-                                        <Typography gutterBottom variant="subtitle1">Reviews: {course.reviews}</Typography>
-                                        <Rating name={`rating-${index}`} value={course.rating} readOnly />
-                                    </Box>
-                                    <Divider style={{ fontWeight: 'bold', borderColor: '#030404' }} />
-                                    <Box mt={2}>
-                                        <Typography variant="body2" color="textSecondary">{course.description}</Typography>
-                                    </Box>
-                                </CardContent>
-                                <Box mt="auto" p={2}>
-                                    <Box display="flex" justifyContent="center" alignItems="center">
-                                        {isEnrolled(course.id) ? (
-                                            <Button variant="contained" color="primary" size="small" className="radius-xl" disabled>Enrolled</Button>
-                                        ) : (
-                                            <Button variant="contained" color="primary" size="small" className="radius-xl" onClick={() => handleEnroll(course.id)}>Enroll Now</Button>
-                                        )}
-                                    </Box>
-                                </Box>
-                            </Card>
-                        </Grid>
-                    ))}
-                </Grid>
-            </Box>
-            <Box mt={4} display="flex" justifyContent="center">
-                <Pagination count={Math.ceil(filteredCourses.length / coursesPerPage)} page={page} onChange={handleChangePage} color="primary" />
-            </Box>
-            <VideoCreate
-                open={open}
-                onClose={handleClose}
-            />
-        </main>
+            </main>
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={handleSnackbarClose}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                }}
+            >
+                <MuiAlert
+                    elevation={6}
+                    variant="filled"
+                    onClose={handleSnackbarClose}
+                    severity={snackbarSeverity}
+                >
+                    {snackbarMessage}
+                </MuiAlert>
+            </Snackbar>
+        </>
     );
-};
+}
 
 export default AllCourse;

@@ -15,26 +15,26 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
-const drawerWidth = 100;
+const drawerWidth = 240; // Increased width for better readability
 const navItems = [{ label: 'Home', to: '/' }, { label: 'About', to: '/about' }, { label: 'Contact', to: '/contact' }, { label: 'Login', to: '/login' }];
+
 function Header(props) {
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const location = useLocation();
+
     const handleDrawerToggle = () => {
         setMobileOpen((prevState) => !prevState);
     };
 
     const drawer = (
-        <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-            <Typography variant="h6" sx={{ my: 2 }}>
-                Edu-Net
-            </Typography>
+        <Box sx={{ width: drawerWidth }}>
+            <Toolbar />
             <Divider />
             <List>
                 {navItems.map((item, index) => (
                     <ListItem key={index} disablePadding>
-                        <ListItemButton sx={{ textAlign: 'center' }} component={Link} to={item.to}>
+                        <ListItemButton component={Link} to={item.to} onClick={handleDrawerToggle}>
                             <ListItemText primary={item.label} />
                         </ListItemButton>
                     </ListItem>
@@ -48,7 +48,7 @@ function Header(props) {
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <AppBar component="nav">
+            <AppBar position="fixed" sx={{ backgroundColor: '#dcdddf' }}>
                 <Toolbar>
                     <IconButton
                         color="inherit"
@@ -59,19 +59,36 @@ function Header(props) {
                     >
                         <MenuIcon />
                     </IconButton>
-
-                    <Typography
-                        variant="h6"
-                        component="div"
-                        sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-                    >
-                        Edu-Net
+                    <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+                        oneplacetogether
                     </Typography>
                     <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                         {navItems.map((item, index) => (
-                            <Button key={index} sx={{ color: location.pathname === item.to ? '#000' : '#fff', fontWeight: location.pathname === item.to ? 'bold' : 'normal' }} component={Link} to={item.to}>
-                                {item.label}
-                            </Button>
+                            item.label === "Login" ? (
+                                <Button key={index} component={Link} to={item.to} variant="contained"
+                                    sx={{
+                                        mx: 1,
+                                        backgroundColor: 'black',
+                                        '&:hover': {
+                                            backgroundColor: 'black',
+                                            color: 'white'
+                                        }
+                                    }}
+                                >
+                                    {item.label}
+                                </Button>
+                            ) : (
+                                <Button
+                                    key={index}
+                                    component={Link}
+                                    to={item.to}
+                                    variant="text"
+                                    color={location.pathname === item.to ? 'primary' : 'inherit'}
+                                    sx={{ mx: 1, fontWeight: location.pathname === item.to ? 'bold' : 'normal' }}
+                                >
+                                    {item.label}
+                                </Button>
+                            )
                         ))}
                     </Box>
                 </Toolbar>
@@ -80,6 +97,7 @@ function Header(props) {
                 <Drawer
                     container={container}
                     variant="temporary"
+                    anchor="left"
                     open={mobileOpen}
                     onClose={handleDrawerToggle}
                     ModalProps={{
@@ -87,7 +105,7 @@ function Header(props) {
                     }}
                     sx={{
                         display: { xs: 'block', sm: 'none' },
-                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                        '& .MuiDrawer-paper': { width: drawerWidth },
                     }}
                 >
                     {drawer}

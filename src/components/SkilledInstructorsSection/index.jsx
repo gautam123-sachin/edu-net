@@ -16,7 +16,7 @@ const ServiceItem = ({ icon, title, description }) => {
 
   return (
     <Grid item xs={12} sm={6} md={3}>
-      <Card className="service-card" sx={{ boxShadow:'none', backgroundColor: '#9ad9df', }}>
+      <Card className="service-card" sx={{ boxShadow:'none', backgroundColor: '#9ad9df' }}>
         <CardContent className="card-content">
           {iconMapping[icon]}
           <Typography variant="h5" component="h2" gutterBottom>

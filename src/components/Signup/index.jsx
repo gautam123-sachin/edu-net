@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { Snackbar } from '@mui/material';
-import './style.css'; 
+import MuiAlert from '@mui/material/Alert';
+
+import './style.css';
+
+import { signup } from '../../redux/reducers/authReducer';
 
 const Signup = () => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         firstname: '',
@@ -12,9 +18,11 @@ const Signup = () => {
         email: '',
         password: '',
     });
+    const [loading, setLoading] = useState(false);
     const [formErrors, setFormErrors] = useState({});
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
     useEffect(() => {
         document.body.classList.add('signup-bg');
@@ -32,18 +40,18 @@ const Signup = () => {
 
     const validateFormData = () => {
         const errors = {};
-        if (!formData.firstname) {
+        if (!formData.firstname.trim()) {
             errors.firstname = "First Name is required";
         }
-        if (!formData.lastname) {
+        if (!formData.lastname.trim()) {
             errors.lastname = "Last Name is required";
         }
-        if (!formData.email) {
+        if (!formData.email.trim()) {
             errors.email = "Email is required";
         } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
             errors.email = 'Email is invalid';
         }
-        if (!formData.password) {
+        if (!formData.password.trim()) {
             errors.password = "Password is required";
         }
         setFormErrors(errors);
@@ -52,44 +60,47 @@ const Signup = () => {
 
     const handleSignup = async () => {
         if (validateFormData()) {
+            setLoading(true);
             try {
-                // Check if email already exists
-                const checkExistingEmailResponse = await axios.get(`http://localhost:5000/users?email=${formData.email}`);
-                if (checkExistingEmailResponse.data.length > 0) {
-                    setOpenSnackbar(true);
-                    setSnackbarMessage('Email already exists. Please use a different email address.');
-                    return;
-                }
+                const response = await axios.post('http://localhost:8000/v1/signup', formData);
+                console.log("response", response);
+                if (response.status === 200) {
 
-                // Proceed with signup
-                const response = await axios.post('http://localhost:5000/users', formData);
-                if (response) {
                     setOpenSnackbar(true);
-                    setSnackbarMessage('Signup successful!');
-                    navigate('/membership');
+                    dispatch(signup(response.data));
+                    setSnackbarSeverity('success');
+                    setSnackbarMessage(response.data.message);
+                    // navigate('/membership');
+                    setTimeout(() => {
+                        navigate('/otp');
+                    }, 200)
                     setFormData({
                         firstname: '',
                         lastname: '',
                         email: '',
                         password: '',
                     })
-                    
                 }
             } catch (error) {
-                console.error('Signup error:', error);
+                console.log('error?.response?.data?.error', error);
                 setOpenSnackbar(true);
-                setSnackbarMessage('Signup failed. Please try again later.');
+                setSnackbarSeverity('error');
+                setSnackbarMessage(error?.response?.data?.error || 'An error occurred'); // Providing a fallback message if data.error is not available
                 setFormData({
                     firstname: '',
                     lastname: '',
                     email: '',
                     password: '',
-                })
+                });
+            } finally {
+                setLoading(false);
             }
+
         }
     }
+
     const handleCloseSnackbar = () => {
-        setOpenSnackbar(false); 
+        setOpenSnackbar(false);
     };
 
     return (
@@ -99,9 +110,9 @@ const Signup = () => {
             </div>
             <div className="sign-form">
                 <label htmlFor="firstname">First Name:</label>
-                <input 
-                    type="text" 
-                    id="firstname" 
+                <input
+                    type="text"
+                    id="firstname"
                     name="firstname"
                     value={formData.firstname}
                     onChange={handleInputChange}
@@ -111,9 +122,9 @@ const Signup = () => {
                 {formErrors.firstname && <p className="error">{formErrors.firstname}</p>}
 
                 <label htmlFor="lastname">Last Name:</label>
-                <input 
-                    type="text" 
-                    id="lastname" 
+                <input
+                    type="text"
+                    id="lastname"
                     name="lastname"
                     value={formData.lastname}
                     onChange={handleInputChange}
@@ -123,9 +134,9 @@ const Signup = () => {
                 {formErrors.lastname && <p className="error">{formErrors.lastname}</p>}
 
                 <label htmlFor="email">Email:</label>
-                <input 
-                    type="text" 
-                    id="email" 
+                <input
+                    type="text"
+                    id="email"
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
@@ -135,29 +146,38 @@ const Signup = () => {
                 {formErrors.email && <p className="error">{formErrors.email}</p>}
 
                 <label htmlFor="password">Password:</label>
-                <input 
-                    type="password" 
-                    id="password" 
+                <input
+                    type="password"
+                    id="password"
                     name="password"
-                    value={formData.password}
+                    value={formData.Aw}
                     onChange={handleInputChange}
                     placeholder="Enter your password"
                     maxLength={20} // Set maximum length
                 />
                 {formErrors.password && <p className="error">{formErrors.password}</p>}
-
-                <button type="submit" onClick={handleSignup}>Signup</button>
+                <button type="submit" className={`signup-button ${loading ? 'loading' : ''}`} disabled={loading} onClick={handleSignup}>
+                    {loading ? 'Signing up...' : 'Signup'}
+                </button>
             </div>
             <Snackbar
                 open={openSnackbar}
-                autoHideDuration={6000} // Snackbar will be automatically hidden after 6 seconds
+                autoHideDuration={6000}
                 onClose={handleCloseSnackbar}
-                message={snackbarMessage}
                 anchorOrigin={{
                     vertical: 'top',
                     horizontal: 'center',
                 }}
-            />
+            >
+                <MuiAlert
+                    elevation={6}
+                    variant="filled"
+                    onClose={handleCloseSnackbar}
+                    severity={snackbarSeverity}
+                >
+                    {snackbarMessage}
+                </MuiAlert>
+            </Snackbar>
         </div>
     );
 }

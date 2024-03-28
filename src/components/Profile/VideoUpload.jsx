@@ -1,22 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Grid, Card, CardContent, Typography, Button, useTheme, useMediaQuery } from '@mui/material';
 import { Videocam } from '@mui/icons-material';
 import VideoPost from './VideoPost';
-import VideoCreate from './VideoCreate';
 
 const VideoUpload = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-    const [open, setOpen] = useState(false);
-
+        const navigate = useNavigate(); 
     const handleUploadVideo = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
+        navigate('/dashboard/create-course');
+    }
     return (
         <Grid container spacing={2} justifyContent="center" sx={isMobile ? {} : { paddingRight: '104px !important' }}>
             <Grid item xs={12}>
@@ -30,11 +24,9 @@ const VideoUpload = () => {
                         </Button>
                     </CardContent>
                 </Card>
-                <VideoPost />
-                <VideoCreate
-                    open={open}
-                    onClose={handleClose}
-                />
+               <div style={{ marginTop: '20px' }}>
+               <VideoPost />
+               </div>
             </Grid>
         </Grid>
     );

@@ -29,12 +29,12 @@ import Network from './NetWork/index.jsx';
 import Profile from '../Profile/index.jsx';
 import GoLive from '../Profile/GoLive.jsx';
 import Courses from './Courses/index.jsx';
-import AllCourse from './AllCourse/index.jsx';
+import CourseDetails from './CourseDetails.jsx';
+import CreateCourseForm from '../common/CreateCourseForm.jsx';
 
 const drawerWidth = 100;
 const navItems = [
-    { label: 'Your Courses', to: "/dashboard/your-courses" },
-    { label: 'All Courses', to: "/dashboard/all-courses" },
+    { label: 'Courses', to: "/dashboard/courses" },
     { label: 'NetWork', to: "/dashboard/network" },
     { label: 'E-Wallet', to: "/dashboard/e-wallet" }
 ];
@@ -69,15 +69,14 @@ function Dashboard(props) {
         setAnchorElUser(null);
     };
     const handleLogout = () => {
-        console.log('Logging out...');
         dispatch(logout());
         navigate('/login');
     };
 
     const container = window !== undefined ? () => window().document.body : undefined;
 
-    const { firstname, lastname } = user;
-    console.log('firstname and lastname', `${firstname} ${lastname}`);
+    const { name } = user;
+    console.log(name);
 
     return (
         <>
@@ -108,7 +107,7 @@ function Dashboard(props) {
                                 </Button>
                             ))}
                             <IconButton sx={{ p: 0 }} onClick={handleOpenUserMenu}>
-                                <Avatar alt={firstname} src="/static/images/avatar.jpg" />
+                                <Avatar alt={name} src="/static/images/avatar.jpg" />
                             </IconButton>
                             <Menu
                                 sx={{ mt: '45px' }}
@@ -173,8 +172,10 @@ function Dashboard(props) {
                         <Route path="/e-wallet" element={<EWallet />} />
                         <Route path="/profile" element={<Profile user={user} />} />
                         <Route path="/go-live" element={<GoLive />} />
-                        <Route path="/your-courses" element={<Courses user={user} />} />
-                        <Route path="all-courses" element={<AllCourse user={user} />} />
+                        <Route path="/courses" element={<Courses user={user} />} />
+                        <Route path="/courses-details/:courseId" element={<CourseDetails user={user} />} />
+                        <Route path="/create-course" element={<CreateCourseForm user={user} />} />
+                        <Route path="/edit-course/:courseId" element={<CreateCourseForm />} />
                     </Routes>
                 </Box>
             </Box>

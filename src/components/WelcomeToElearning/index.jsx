@@ -1,8 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Grid, Typography, Button } from '@mui/material';
 import { ArrowRight } from '@mui/icons-material';
 
 const WelcomeToElearning = () => {
+  const navigate = useNavigate();
   return (
     <div className="container-xxl py-5">
       <Grid container spacing={5}>
@@ -43,7 +45,7 @@ const WelcomeToElearning = () => {
               </Typography>
             </Grid>
           </Grid>
-          <Button variant="contained" color="primary" size="large" sx={{ mt: 2 }}>Explore Courses</Button>
+          <Button variant="contained" color="primary" size="large" sx={{ mt: 2 }} onClick={() =>navigate('/login')}>Explore Courses</Button>
         </Grid>
       </Grid>
     </div>

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Grid, Typography, Card, CardContent, IconButton } from '@mui/material';
 import { Facebook, Twitter, Instagram } from '@mui/icons-material';
+import { staticInstructors } from '../../Helper.jsx';
 
 const InstructorItem = ({ id, imageSrc, name, designation, socialMediaLinks }) => {
   return (
@@ -37,23 +38,6 @@ const InstructorItem = ({ id, imageSrc, name, designation, socialMediaLinks }) =
 };
 
 const ExpertInstructors = () => {
-  const [instructors, setInstructors] = useState([]);
-
-  useEffect(() => {
-    fetch('http://localhost:5000/instructors')
-      .then(response => response.json())
-      .then(data => {
-        // Sort instructors by rating in descending order
-        const sortedInstructors = data.sort((a, b) => b.rating - a.rating);
-        // Slice the top 4 instructors
-        const topRatedInstructors = sortedInstructors.slice(0, 4);
-        setInstructors(topRatedInstructors);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-  }, []);
-  
   return (
     <div className="container-xxl py-5">
       <div className="container">
@@ -62,7 +46,7 @@ const ExpertInstructors = () => {
           <Typography variant="h3" className="mb-5">Expert Instructors</Typography>
         </div>
         <Grid container spacing={4}>
-          {instructors.map(instructor => (
+          {staticInstructors.map(instructor => (
             <InstructorItem
               key={instructor.id}
               id={instructor.id}
@@ -79,3 +63,4 @@ const ExpertInstructors = () => {
 };
 
 export default ExpertInstructors;
+

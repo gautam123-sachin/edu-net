@@ -13,11 +13,16 @@ import Dashboard from './components/Dashboard/index.jsx';
 import MembershipForm from './components/MembershipForm/index.jsx';
 import Success from './components/Success.jsx';
 import Cancel from './components/Cencel.jsx';
-
+import OtpVerification from './components/Signup/OtpVerification.jsx';
 function App() {
   const user = useSelector(state => state.auth.user);
+  const environment = process.env.NODE_ENV;
   const ProtectedRoute = ({ element }) => {
     return user ? element : <Navigate to="/login" />;
+  };
+
+  const SignupProtectedRoute = ({ element }) => {
+    return user ? element : <Navigate to="/Signup" />;
   };
 
   return (
@@ -27,7 +32,12 @@ function App() {
           <Route path="/" element={<HomeWithHeader />} />
           <Route path="/about" element={<AboutWithHeader />} />
           <Route path="/contact" element={<ContactWithHeader />} />
-          <Route path='/login' element={<Login />} />
+          {/* <Route path='/login' element={<Login />} /> */}
+          {environment === 'production' ? (
+            <Route path="/login" element={<ComingSoon />} />
+          ) : (
+            <Route path="/login" element={<Login />} />
+          )}
           <Route path='/signup' element={<Signup />} />
           <Route
             path="/dashboard/*"
@@ -35,7 +45,11 @@ function App() {
           />
           <Route
             path="/membership"
-            element={<ProtectedRoute element={<MembershipForm />} />}
+            element={<SignupProtectedRoute element={<MembershipForm user={user} />} />}
+          />
+          <Route
+            path="/otp"
+            element={<SignupProtectedRoute element={<OtpVerification user={user} />} />}
           />
           <Route
             path="/success"
@@ -62,5 +76,10 @@ const WithHeaderAndFooter = ({ children }) => (
 const HomeWithHeader = () => <WithHeaderAndFooter><Home /></WithHeaderAndFooter>;
 const AboutWithHeader = () => <WithHeaderAndFooter><About /></WithHeaderAndFooter>;
 const ContactWithHeader = () => <WithHeaderAndFooter><Contact /></WithHeaderAndFooter>;
+const ComingSoon = () => (
+  <div className="container">
+    <h1>Coming Soon...</h1>
+  </div>
+);
 
 export default App;

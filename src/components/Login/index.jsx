@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { Snackbar } from '@mui/material';
+import SyncIcon from '@mui/icons-material/Sync';
+import MuiAlert from '@mui/material/Alert';
 
 import { login } from '../../redux/reducers/authReducer';
 
@@ -13,10 +15,13 @@ const Login = () => {
         email: '',
         password: '',
     });
+    const [loading, setLoading] = useState(false);
     const [formErrors, setFormErrors] = useState({});
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
-    
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -50,24 +55,35 @@ const Login = () => {
 
     const handleLogin = async () => {
         if (validateFormData()) {
+            setLoading(true);
             try {
-                const response = await axios.get('https://my-json-server.typicode.com/gautam123-sachin/edunet/users?email=${formData.email}&password=${formData.password}');
-                // const response = await axios.get(`http://localhost:5000/users?email=${formData.email}&password=${formData.password}`);
-                if (response.data.length === 1) {
-                    // Login successful
-                    dispatch(login(response.data[0]));
+                const response = await axios.post(`http://localhost:8000/v1/login`, formData, {
+                    withCredentials: true,
+                })
+                  if(response.status === 200){
                     setOpenSnackbar(true);
-                    setSnackbarMessage('Login successful');
-                    navigate('/dashboard'); // Navigate to Dashboard
-                } else {
-                    // Login failed
-                    setOpenSnackbar(true);
-                    setSnackbarMessage('Invalid email or password');
-                }
+                    dispatch(login(response.data));
+                    setSnackbarSeverity('success');
+                    setSnackbarMessage(response.data.message);
+                    setTimeout(() => {
+                        navigate('/dashboard'); 
+                    }, 200);
+                    setFormData({
+                        email: '',
+                        password: '',
+                    })
+                } 
             } catch (error) {
-                console.error('Login error:', error);
+                console.log('error', error);
                 setOpenSnackbar(true);
-                setSnackbarMessage('Login failed. Please try again.');
+                setSnackbarSeverity('error');
+                setSnackbarMessage(error.response.data.error);
+                setFormData({
+                    email: '',
+                    password: '',
+                });
+            } finally {
+                setLoading(false); // Stop loading
             }
         }
     }
@@ -105,7 +121,7 @@ const Login = () => {
 
                 <label htmlFor="forgot-password"><Link to="/forgot-password">Forgot Password?</Link></label>
 
-                <button type="submit" onClick={handleLogin}>Login</button>
+                <button type="submit" onClick={handleLogin}>{loading ? <SyncIcon size={24} /> : 'Login'}</button>
 
                 <div className="additional-option">
                     <span>Don't have an account? <Link to="/signup">Signup</Link></span>
@@ -115,12 +131,20 @@ const Login = () => {
                 open={openSnackbar}
                 autoHideDuration={6000}
                 onClose={handleCloseSnackbar}
-                message={snackbarMessage}
                 anchorOrigin={{
                     vertical: 'top',
                     horizontal: 'center',
                 }}
-            />
+            >
+                <MuiAlert
+                    elevation={6}
+                    variant="filled"
+                    onClose={handleCloseSnackbar}
+                    severity={snackbarSeverity}
+                >
+                    {snackbarMessage}
+                </MuiAlert>
+            </Snackbar>
         </div>
     );
 }

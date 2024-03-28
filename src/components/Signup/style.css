@@ -64,3 +64,26 @@ body.signup-bg {
         width: 500px; /* Adjust width for web */
     }
 }
+
+.loading {
+    pointer-events: none; /* Prevent user interaction while loading */
+    opacity: 0.5; /* Reduce opacity to indicate loading */
+}
+
+/* Define your animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Apply animation to the button */
+.signup-button.loading::after {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    border-top-color: #333;
+    animation: spin 1s infinite linear; /* Use the defined animation */
+}

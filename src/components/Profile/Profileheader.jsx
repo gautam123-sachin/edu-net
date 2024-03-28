@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import EditForm from "./EditForm.jsx";
 
-const Profileheader = () => {
+const Profileheader = ({ user }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [open, setOpen] = React.useState(false);
@@ -22,6 +22,14 @@ const Profileheader = () => {
   const handleClose = () => {
     setOpen(false);
   };
+  const { firstname, lastname } = user;
+
+  const getFullName = () => {
+    if (firstname && lastname) {  
+      return `${firstname} ${lastname}`;
+    }
+    return 'N/A';
+  }
 
   return (
     <Grid container spacing={2} >
@@ -44,23 +52,13 @@ const Profileheader = () => {
             <div className="flex-grow-1 mt-3 mt-lg-5">
               <div className="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-4 flex-md-row flex-column gap-4">
                 <div className="user-profile-info">
-                  <Typography variant="h4">John Doe</Typography>
-                  <ul className="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-2">
-                    <li className="list-inline-item">
-                      <i className="mdi mdi-invert-colors me-1 mdi-20px"></i><span className="fw-medium">UX Designer</span>
-                    </li>
-                    <li className="list-inline-item">
-                      <i className="mdi mdi-map-marker-outline me-1 mdi-20px"></i> <span className="fw-medium">Vatican City</span>
-                    </li>
-                    <li className="list-inline-item">
-                      <i className="mdi mdi-calendar-blank-outline me-1 mdi-20px"></i> <span className="fw-medium">Joined April 2021</span>
-                    </li>
-                  </ul>
+                <Typography variant="h4">{getFullName()}</Typography>
                 </div>
                 <Button variant="contained" color="primary" startIcon={<i className="mdi mdi-account-check-outline me-1"></i>} onClick={handleEdit}>Edit</Button>
                 <EditForm
                   open={open}
                   onClose={handleClose}
+                  user={user}
                 />
               </div>
             </div>
