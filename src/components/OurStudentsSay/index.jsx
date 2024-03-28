@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Typography, Grid } from '@mui/material';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';

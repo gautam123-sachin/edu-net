@@ -53,7 +53,7 @@ const NetWork = () => {
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const [activeTab, setActiveTab] = useState('RefernalMembers');
     const [membersData, setMembersData] = useState([]);
-
+console.log('memberData', membersData);
     useEffect(() => {
         // Fetch data from API based on active tab
         fetchData(activeTab);
