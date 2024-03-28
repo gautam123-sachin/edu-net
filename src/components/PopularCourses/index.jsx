@@ -62,7 +62,7 @@ const PopularCourses = () => {
                   </div>
                 </div>
                 <CardContent className="text-center p-4 pb-0" style={{ flex: 1 }}>
-                  <Typography variant="h5" className="mb-0">${course.price}</Typography>
+                  <Typography variant="h5" className="mb-0">Free</Typography>
                   <div className="mb-3">
                     <Rating value={course.rating} readOnly max={5} />
                   </div>
