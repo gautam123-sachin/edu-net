@@ -31,7 +31,7 @@ const EditForm = ({ open, onClose, user }) => {
         address: user.address || '',
         phone: user.phone || '',
         email: user.email || '',
-        file: null,
+        file: user.profilePic || '',
     });
     const [errors, setErrors] = useState({});
 
@@ -47,7 +47,6 @@ const EditForm = ({ open, onClose, user }) => {
             console.error('Error updating user:', error);
         }
     };
-
     const validateForm = () => {
         const newErrors = {};
         let isValid = true;
@@ -93,14 +92,48 @@ const EditForm = ({ open, onClose, user }) => {
         const isValid = validateForm();
         if (isValid) {
             handleUpdate();
+            onClose();
         }
     };
 
+    // Inside handleFileChange function
+
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-        setFormData({ ...formData, file });
-        setErrors({ ...errors, file: '' });
-    }
+        const reader = new FileReader();
+    
+        reader.onloadend = () => {
+            if (file) {
+                // Read file as base64
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => {
+                    setFormData({
+                        ...formData,
+                        file: reader.result,
+                    });
+                    setErrors({
+                        ...errors,
+                        file: ''
+                    });
+                };
+            } else {
+                setFormData({
+                    ...formData,
+                    file: '',
+                });
+                setErrors({
+                    ...errors,
+                    file: 'Please select a file'
+                });
+            }
+        };
+    
+        if (file) {
+            // Start reading the file
+            reader.readAsDataURL(file);
+        }
+    };
 
     const staticImage = "https://demos.themeselection.com/materio-bootstrap-html-admin-template/assets/img/avatars/1.png";
 
@@ -110,7 +143,7 @@ const EditForm = ({ open, onClose, user }) => {
             <DialogContent>
                 <div className="flex-shrink-0 mt-n2 mx-lg-0 mx-auto">
                     <Avatar
-                        src={formData.file ? URL.createObjectURL(formData.file) : staticImage}
+                        src={formData.file ? formData.file : staticImage}
                         sx={{ width: 145 }}
                         alt="user image"
                         className="d-block h-auto ms-0 ms-sm-4 rounded user-profile-img"

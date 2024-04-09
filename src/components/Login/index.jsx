@@ -60,19 +60,19 @@ const Login = () => {
                 const response = await axios.post(`http://localhost:8000/v1/login`, formData, {
                     withCredentials: true,
                 })
-                  if(response.status === 200){
+                if (response.status === 200) {
                     setOpenSnackbar(true);
                     dispatch(login(response.data));
                     setSnackbarSeverity('success');
                     setSnackbarMessage(response.data.message);
                     setTimeout(() => {
-                        navigate('/dashboard'); 
+                        navigate('/dashboard');
                     }, 200);
                     setFormData({
                         email: '',
                         password: '',
                     })
-                } 
+                }
             } catch (error) {
                 console.log('error', error);
                 setOpenSnackbar(true);
@@ -119,9 +119,9 @@ const Login = () => {
                 />
                 {formErrors.password && <span className="error">{formErrors.password}</span>}
 
-                <label htmlFor="forgot-password"><Link to="/forgot-password">Forgot Password?</Link></label>
+                {/* <label htmlFor="forgot-password"><Link to="/forgot-password">Forgot Password?</Link></label> */}
 
-                <button type="submit" onClick={handleLogin}>{loading ? <SyncIcon size={24} /> : 'Login'}</button>
+                <button type="submit" onClick={handleLogin} style={{ marginTop: '20px' }}>{loading ? <SyncIcon size={24} /> : 'Login'}</button>
 
                 <div className="additional-option">
                     <span>Don't have an account? <Link to="/signup">Signup</Link></span>

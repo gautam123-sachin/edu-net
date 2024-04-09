@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import {
     AppBar,
     Box,
@@ -55,6 +56,24 @@ function Dashboard(props) {
     const navigate = useNavigate();
     const user = useSelector(state => state.auth.user);
     console.log('user', user);
+    const [userData, setUserData] = useState(null);
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                if (user && user.userId) { // Check if user and user.user?._id exist
+                    const response = await axios.get(`http://localhost:8000/v1/user/${user.userId}`);
+                    setUserData(response.data);
+                }
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+                // Handle error (e.g., show error message)
+            }
+        };
+
+        fetchUserData();
+    }, [user]); // Add 'user' to the dependency array
+
 
     const handleDrawerToggle = () => {
         setMobileOpen((prevState) => !prevState);
@@ -68,6 +87,7 @@ function Dashboard(props) {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+
     const handleLogout = () => {
         dispatch(logout());
         navigate('/login');
@@ -75,8 +95,17 @@ function Dashboard(props) {
 
     const container = window !== undefined ? () => window().document.body : undefined;
 
-    const { name } = user;
-    console.log(name);
+    const staticImage = "https://demos.themeselection.com/materio-bootstrap-html-admin-template/assets/img/avatars/1.png";
+    const { user: userDataUser } = userData;
+    const { firstname, lastname, profilePic } = userDataUser || {};
+    
+    const getFullName = () => {
+        if (firstname && lastname) {  
+          return `${firstname} ${lastname}`;
+        }
+        return 'N/A';
+      }
+      const name = getFullName();
 
     return (
         <>
@@ -98,7 +127,7 @@ function Dashboard(props) {
                             component="div"
                             sx={{ flexGrow: 1, display: { sm: 'block' } }}
                         >
-                            MUI
+                            oneplacetogether
                         </Typography>
                         <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                             {navItems.map((item) => (
@@ -107,7 +136,7 @@ function Dashboard(props) {
                                 </Button>
                             ))}
                             <IconButton sx={{ p: 0 }} onClick={handleOpenUserMenu}>
-                                <Avatar alt={name} src="/static/images/avatar.jpg" />
+                                <Avatar alt={name} src={profilePic ? profilePic : staticImage} />
                             </IconButton>
                             <Menu
                                 sx={{ mt: '45px' }}
@@ -150,7 +179,7 @@ function Dashboard(props) {
                     >
                         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
                             <Typography variant="h6" sx={{ my: 2 }}>
-                                MUI
+                                oneplacetogether
                             </Typography>
                             <Divider />
                             <List>
@@ -170,7 +199,7 @@ function Dashboard(props) {
                     <Routes>
                         <Route path="/network" element={<Network />} />
                         <Route path="/e-wallet" element={<EWallet />} />
-                        <Route path="/profile" element={<Profile user={user} />} />
+                        <Route path="/profile" element={<Profile user={user} userData={userData} />} /> {/* Pass userData to Profile component */}
                         <Route path="/go-live" element={<GoLive />} />
                         <Route path="/courses" element={<Courses user={user} />} />
                         <Route path="/courses-details/:courseId" element={<CourseDetails user={user} />} />

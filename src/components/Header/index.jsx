@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
@@ -15,7 +14,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
-const drawerWidth = 240; // Increased width for better readability
+const drawerWidth = 240;
 const navItems = [{ label: 'Home', to: '/' }, { label: 'About', to: '/about' }, { label: 'Contact', to: '/contact' }, { label: 'Login', to: '/login' }];
 
 function Header(props) {
@@ -29,8 +28,6 @@ function Header(props) {
 
     const drawer = (
         <Box sx={{ width: drawerWidth }}>
-            <Toolbar />
-            <Divider />
             <List>
                 {navItems.map((item, index) => (
                     <ListItem key={index} disablePadding>
@@ -48,7 +45,7 @@ function Header(props) {
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <AppBar position="fixed" sx={{ backgroundColor: '#dcdddf' }}>
+            <AppBar position="fixed" sx={{ backgroundColor: '#293244' }}>
                 <Toolbar>
                     <IconButton
                         color="inherit"

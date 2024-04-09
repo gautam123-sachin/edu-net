@@ -20,6 +20,7 @@ import './style.css';
 
 const MembershipForm = ({ user }) => {
     const yourReferralCode = generateReferralCode();
+    console.log('yourReferralCode', yourReferralCode)
     const { firstname, lastname, email } = user.user;
     const [formData, setFormData] = useState({
         name: `${firstname} ${lastname}`,

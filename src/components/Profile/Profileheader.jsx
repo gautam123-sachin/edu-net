@@ -22,7 +22,7 @@ const Profileheader = ({ user }) => {
   const handleClose = () => {
     setOpen(false);
   };
-  const { firstname, lastname } = user;
+  const { firstname, lastname, profilePic } = user;
 
   const getFullName = () => {
     if (firstname && lastname) {  
@@ -30,6 +30,8 @@ const Profileheader = ({ user }) => {
     }
     return 'N/A';
   }
+  
+  const staticImage = "https://demos.themeselection.com/materio-bootstrap-html-admin-template/assets/img/avatars/1.png";
 
   return (
     <Grid container spacing={2} >
@@ -45,7 +47,7 @@ const Profileheader = ({ user }) => {
           <CardContent className="user-profile-header d-flex flex-column flex-lg-row text-sm-start text-center mb-4">
             <div className="flex-shrink-0 mt-n2 mx-lg-0 mx-auto" style={{ marginTop: '-94px' }}>
               <Avatar
-                src="https://demos.themeselection.com/materio-bootstrap-html-admin-template/assets/img/avatars/1.png"
+                src={profilePic ? profilePic : staticImage }
                 sx={{ width: 145 }} alt="user image" className="d-block h-auto ms-0 ms-sm-4 rounded user-profile-img"
               />
             </div>
