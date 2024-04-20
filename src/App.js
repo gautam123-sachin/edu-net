@@ -14,15 +14,20 @@ import MembershipForm from './components/MembershipForm/index.jsx';
 import Success from './components/Success.jsx';
 import Cancel from './components/Cencel.jsx';
 import OtpVerification from './components/Signup/OtpVerification.jsx';
+import Videos from './components/Videos/index.jsx';
+import WatchVideo from './components/Videos/WatchVideo.jsx';
+
 function App() {
   const user = useSelector(state => state.auth.user);
   const environment = process.env.NODE_ENV;
   const ProtectedRoute = ({ element }) => {
-    return user ? element : <Navigate to="/login" />;
+    // return user ? element : <Navigate to="/login" />;
+    return user ? element : element;
   };
 
   const SignupProtectedRoute = ({ element }) => {
-    return user ? element : <Navigate to="/Signup" />;
+    // return user ? element : <Navigate to="/Signup" />;
+    return user ? element : element;
   };
 
   return (
@@ -59,6 +64,8 @@ function App() {
             path="/cancel"
             element={<ProtectedRoute element={<Cancel />} />}
           />
+          <Route path="/videos" element={<VideosWithHeader />} />
+          <Route path='/videos/:id' element={<WatchVideoHeader />} />
         </Routes>
       </>
     </Router>
@@ -76,6 +83,8 @@ const WithHeaderAndFooter = ({ children }) => (
 const HomeWithHeader = () => <WithHeaderAndFooter><Home /></WithHeaderAndFooter>;
 const AboutWithHeader = () => <WithHeaderAndFooter><About /></WithHeaderAndFooter>;
 const ContactWithHeader = () => <WithHeaderAndFooter><Contact /></WithHeaderAndFooter>;
+const VideosWithHeader = () => <WithHeaderAndFooter><Videos /></WithHeaderAndFooter>;
+const WatchVideoHeader = () => <WithHeaderAndFooter><WatchVideo /></WithHeaderAndFooter>;
 const ComingSoon = () => (
   <div className="container">
     <h1>Coming Soon...</h1>

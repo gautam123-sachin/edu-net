@@ -20,8 +20,7 @@ import {
     useTheme,
     useMediaQuery,
 } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import CloseIcon from '@mui/icons-material/Close';
+
 import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../redux/reducers/authReducer.jsx';
@@ -32,12 +31,14 @@ import GoLive from '../Profile/GoLive.jsx';
 import Courses from './Courses/index.jsx';
 import CourseDetails from './CourseDetails.jsx';
 import CreateCourseForm from '../common/CreateCourseForm.jsx';
+import Video from './Video/index.jsx';
+import Upload from '../Upload/index.jsx';
 
 const drawerWidth = 100;
 const navItems = [
-    { label: 'Courses', to: "/dashboard/courses" },
+    { label: 'Videos', to: "/dashboard/video"},
     { label: 'NetWork', to: "/dashboard/network" },
-    { label: 'E-Wallet', to: "/dashboard/e-wallet" }
+    { label: 'E-Wallet', to: "/dashboard/e-wallet" },
 ];
 
 const settings = [
@@ -96,32 +97,23 @@ function Dashboard(props) {
     const container = window !== undefined ? () => window().document.body : undefined;
 
     const staticImage = "https://demos.themeselection.com/materio-bootstrap-html-admin-template/assets/img/avatars/1.png";
-    const { user: userDataUser } = userData;
+    const { user: userDataUser } = userData || {};
     const { firstname, lastname, profilePic } = userDataUser || {};
-    
+
     const getFullName = () => {
-        if (firstname && lastname) {  
-          return `${firstname} ${lastname}`;
+        if (firstname && lastname) {
+            return `${firstname} ${lastname}`;
         }
         return 'N/A';
-      }
-      const name = getFullName();
+    }
+    const name = getFullName();
 
     return (
         <>
             <Box sx={{ display: 'flex' }}>
                 <CssBaseline />
-                <AppBar component="nav">
+                <AppBar component="nav" sx={{ backgroundColor: '#293244' }}>
                     <Toolbar>
-                        <IconButton
-                            color="inherit"
-                            aria-label="open drawer"
-                            edge="start"
-                            onClick={handleDrawerToggle}
-                            sx={{ mr: 2 }}
-                        >
-                            {showSidebar ? <CloseIcon /> : <MenuIcon />}
-                        </IconButton>
                         <Typography
                             variant="h6"
                             component="div"
@@ -131,10 +123,15 @@ function Dashboard(props) {
                         </Typography>
                         <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                             {navItems.map((item) => (
-                                <Button key={item.label} sx={{ color: '#fff' }} component={Link} to={item.to}>
-                                    {item.label}
-                                </Button>
+                                item.label === "Upload" ? (
+                                    <Button key={item.label} component={Link} to={item.to} variant="contained">Upload Video</Button>
+                                ) : (
+                                    <Button key={item.label} sx={{ color: '#fff' }} component={Link} to={item.to}>
+                                        {item.label}
+                                    </Button>
+                                )
                             ))}
+
                             <IconButton sx={{ p: 0 }} onClick={handleOpenUserMenu}>
                                 <Avatar alt={name} src={profilePic ? profilePic : staticImage} />
                             </IconButton>
@@ -199,12 +196,13 @@ function Dashboard(props) {
                     <Routes>
                         <Route path="/network" element={<Network />} />
                         <Route path="/e-wallet" element={<EWallet />} />
-                        <Route path="/profile" element={<Profile user={user} userData={userData} />} /> {/* Pass userData to Profile component */}
+                        <Route path="/profile" element={<Profile user={user} userData={userData} />} /> 
                         <Route path="/go-live" element={<GoLive />} />
-                        <Route path="/courses" element={<Courses user={user} />} />
+                        <Route path="/video" element={<Video />} />
                         <Route path="/courses-details/:courseId" element={<CourseDetails user={user} />} />
                         <Route path="/create-course" element={<CreateCourseForm user={user} />} />
                         <Route path="/edit-course/:courseId" element={<CreateCourseForm />} />
+                        <Route path="/upload" element={<Upload />} />
                     </Routes>
                 </Box>
             </Box>

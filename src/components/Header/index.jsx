@@ -15,7 +15,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
 const drawerWidth = 240;
-const navItems = [{ label: 'Home', to: '/' }, { label: 'About', to: '/about' }, { label: 'Contact', to: '/contact' }, { label: 'Login', to: '/login' }];
+const navItems = [{ label: 'Home', to: '/' },{label:'Videos', to:'/videos'}, { label: 'About', to: '/about' }, { label: 'Contact', to: '/contact' }, { label: 'Login', to: '/login' }];
 
 function Header(props) {
     const { window } = props;
