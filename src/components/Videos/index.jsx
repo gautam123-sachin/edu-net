@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid, Card, CardMedia, CardContent, Typography, Button } from '@mui/material';
+import { Modal, Box, TextField, IconButton, CircularProgress } from '@mui/material';
+import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 
 import './style.css';
 
@@ -14,41 +16,146 @@ const Videos = () => {
             thumbnail: "https://images.unsplash.com/photo-1713283699002-ac9462cedf0a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHx8",
             videoUrl: "https://www.youtube.com/watch?v=pgrTSTdVjBs"
         },
-        {
-            id: 1,
-            title: "Video 1",
-            thumbnail: "https://images.unsplash.com/photo-1713283699002-ac9462cedf0a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHx8",
-            videoUrl: "https://www.youtube.com/watch?v=pgrTSTdVjBs"
-        },
-        {
-            id: 1,
-            title: "Video 1",
-            thumbnail: "https://images.unsplash.com/photo-1713283699002-ac9462cedf0a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHx8",
-            videoUrl: "https://www.youtube.com/watch?v=pgrTSTdVjBs"
-        },
-        {
-            id: 1,
-            title: "Video 1",
-            thumbnail: "https://images.unsplash.com/photo-1713283699002-ac9462cedf0a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHx8",
-            videoUrl: "https://www.youtube.com/watch?v=pgrTSTdVjBs"
-        },
-        {
-            id: 1,
-            title: "Video 1",
-            thumbnail: "https://images.unsplash.com/photo-1713283699002-ac9462cedf0a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHx8",
-            videoUrl: "https://www.youtube.com/watch?v=pgrTSTdVjBs"
-        },
+
     ];
 
-   const handleNavigate = (videoId) => {
+    const handleNavigate = (videoId) => {
         navigate(`/videos/${videoId}`);
     }
+    const [open, setOpen] = useState(false);
+    const [formData, setFormData] = useState({
+        title: '',
+        description: '',
+        videoFile: null,
+        thumbnailFile: null,
+    });
+    const [uploading, setUploading] = useState(false);
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+
+    const handleFileChange = (e) => {
+        const { name, files } = e.target;
+        setFormData({
+            ...formData,
+            [name]: files[0],
+        });
+    };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log('Form Data:', formData);
+        try {
+            setUploading(true);
+            const formDataToSend = new FormData();
+            formDataToSend.append('title', formData.title);
+            formDataToSend.append('description', formData.description);
+            formDataToSend.append('video', formData.videoFile);
+            formDataToSend.append('thumbnail', formData.thumbnailFile);
+
+            // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+            const response = await fetch('YOUR_API_ENDPOINT', {
+                method: 'POST',
+                body: formDataToSend,
+            });
+            if (!response.ok) {
+                throw new Error('Error uploading video');
+            }
+            console.log('Video uploaded successfully');
+            setUploading(false);
+            handleClose();
+        } catch (error) {
+            console.error('Error:', error.message);
+            setUploading(false);
+        }
+    };
 
     return (
         <>
             <Grid container spacing={2}>
                 <Grid xs={12} className='upload-btn'>
-                    <Button variant="contained" color="primary" onClick={handleNavigate}>Upload Video</Button>
+                    <Button onClick={handleOpen} variant="outlined" startIcon={<VideoLibraryIcon />}>Upload Video</Button>
+                    <Modal
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                        <Box sx={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            width: { xs: '90%', sm: '70%', md: '50%' },
+                            bgcolor: 'background.paper',
+                            boxShadow: 24,
+                            p: 4,
+                            borderRadius: '8px',
+                            outline: 'none',
+                            textAlign: 'center',
+                        }}>
+                            <Typography variant="h5" gutterBottom>
+                                Upload Video
+                            </Typography>
+                            <form onSubmit={handleSubmit}>
+                                <Box sx={{ mt: 2 }}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        label="Title"
+                                        name="title"
+                                        value={formData.title}
+                                        onChange={handleChange}
+                                    />
+                                </Box>
+                                <Box sx={{ mt: 2 }}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        multiline
+                                        rows={4}
+                                        label="Description"
+                                        name="description"
+                                        value={formData.description}
+                                        onChange={handleChange}
+                                    />
+                                </Box>
+                                <Box sx={{ mt: 2 }}>
+                                    <input
+                                        type="file"
+                                        accept="video/*"
+                                        name="videoFile"
+                                        onChange={handleFileChange}
+                                    />
+                                </Box>
+                                <Box sx={{ mt: 2 }}>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        name="thumbnailFile"
+                                        onChange={handleFileChange}
+                                    />
+                                </Box>
+                                <Box sx={{ mt: 2 }}>
+                                    <Button type="submit" variant="contained" disabled={uploading}>
+                                        {uploading ? <CircularProgress color="success" size={24} /> : "Upload"}
+                                    </Button>
+                                </Box>
+                            </form>
+                        </Box>
+                    </Modal>
                 </Grid>
             </Grid>
             <Grid container spacing={{ xs: 2, sm: 3, md: 4, lg: 6 }} className='video-container'>

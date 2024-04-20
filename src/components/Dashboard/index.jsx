@@ -31,7 +31,6 @@ import GoLive from '../Profile/GoLive.jsx';
 import Courses from './Courses/index.jsx';
 import CourseDetails from './CourseDetails.jsx';
 import CreateCourseForm from '../common/CreateCourseForm.jsx';
-import Video from './Video/index.jsx';
 import Upload from '../Upload/index.jsx';
 
 const drawerWidth = 100;
@@ -198,7 +197,6 @@ function Dashboard(props) {
                         <Route path="/e-wallet" element={<EWallet />} />
                         <Route path="/profile" element={<Profile user={user} userData={userData} />} /> 
                         <Route path="/go-live" element={<GoLive />} />
-                        <Route path="/video" element={<Video />} />
                         <Route path="/courses-details/:courseId" element={<CourseDetails user={user} />} />
                         <Route path="/create-course" element={<CreateCourseForm user={user} />} />
                         <Route path="/edit-course/:courseId" element={<CreateCourseForm />} />

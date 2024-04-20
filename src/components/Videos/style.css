@@ -1,5 +1,5 @@
 .video-container{
-    padding-top: 100px !important;
+    padding-top: 50px !important;
     padding-bottom: 100px !important;
     padding-left: 10px !important;
     padding-right: 10px !important;
@@ -8,6 +8,6 @@
 .upload-btn{
     display: flex !important;
     justify-content: end !important;
-    margin-top: 50px !important;
+    margin-top: 100px !important;
     margin-right: 50px !important;
 }

@@ -13,9 +13,9 @@ import {
     useMediaQuery
 } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
-import AllMembers from "./AllMembers";
 import RefernalMember from "./RefernalMember";
-import DownlineMembers from "./DownlineMembers";
+import { Stack } from "react-bootstrap";
+import { Table, TableHead, TableBody, TableCell, TableRow, Avatar, Paper, TableContainer } from '@mui/material';
 
 const Members = [
     {
@@ -26,20 +26,6 @@ const Members = [
         totalmembers: '10',
     },
     {
-        label: 'Downline Members',
-        icon: <InfoIcon />,
-        color: '#dc3545',
-        toolTipTitle: 'Downline Members',
-        totalmembers: '5',
-    },
-    {
-        label: 'All Members',
-        icon: <InfoIcon />,
-        color: '#ffc107',
-        toolTipTitle: 'All Members',
-        totalmembers: '20',
-    },
-    {
         label: 'Monthly Added Members',
         icon: <InfoIcon />,
         color: '#28a745',
@@ -48,12 +34,36 @@ const Members = [
     },
 ];
 
+const refernalMembers = [
+    {
+        id: 1,
+        name: "John Doe",
+        avatar: "https://example.com/avatar1.png",
+        position: "Left",
+        profession: "Engineer"
+    },
+    {
+        id: 2,
+        name: "Jane Smith",
+        avatar: "https://example.com/avatar2.png",
+        position: "Right",
+        profession: "Software Developer"
+    },
+    {
+        id: 3,
+        name: "Alice Johnson",
+        avatar: "https://example.com/avatar3.png",
+        position: "Left",
+        profession: "Graphic Designer"
+    },
+];
+
 const NetWork = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const [activeTab, setActiveTab] = useState('RefernalMembers');
     const [membersData, setMembersData] = useState([]);
-console.log('memberData', membersData);
+    console.log('memberData', membersData);
     useEffect(() => {
         // Fetch data from API based on active tab
         fetchData(activeTab);
@@ -69,35 +79,34 @@ console.log('memberData', membersData);
             console.error('Error fetching data:', error);
         }
     };
-
-    const handleTabChange = (tab) => {
-        setActiveTab(tab);
-    };
-
-    const getFilter = () => {
-        switch (activeTab) {
-            case 'RefernalMembers':
-                return <RefernalMember />;
-            case 'DownlineMembers':
-                return <DownlineMembers />;
-            case 'AllMembers':
-                return <AllMembers />;
-            default:
-                return <RefernalMember />;
-        }
-    };
-
     return (
-        <Grid container spacing={3}>
-            <Grid item xs={12} sm={12} md={4} lg={12}>
+        <Box container spacing={3}>
+            <Box item xs={12}>
                 <Box display="flex" alignItems="center" mb={2}>
                     <Typography variant="h4" component="h4" mr={1}>Network</Typography>
                 </Box>
-                <Grid container spacing={3}>
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: { xs: 'column', sm: 'row', md: 'row', lg: 'row' },
+                    gap: "-45px",
+                }}>
                     {Members.map((item, index) => (
-                        <Grid item xs={12} lg={3} key={index}>
-                            <Card sx={isMobile ? { backgroundColor: item.color } : { width: '250px', backgroundColor: item.color }}>
-                                <CardContent style={{ paddingBottom: '15px' }}>
+                        <Stack
+                            direction="row"
+                            spacing={{xs:3, sm: 4}}
+                            key={index}
+                            style={{ flex: "none", marginLeft: 20, marginBottom: 10, width: 250 }}
+                        >
+                            <Card
+                                sx={{
+                                    width: '100%',
+                                    backgroundColor: item.color,
+                                    maxWidth: isMobile ? '100%' : '250px', // Adjusted width for mobile view
+                                }}
+                            >
+                                <CardContent style={{
+                                    paddingBottom: '15px',
+                                }}>
                                     <CardHeader
                                         style={{ padding: '0px' }}
                                         action={
@@ -120,38 +129,42 @@ console.log('memberData', membersData);
                                     />
                                 </CardContent>
                             </Card>
-                        </Grid>
+                        </Stack>
                     ))}
-                </Grid>
-                <Divider style={{ marginTop: '10px', marginBottom: '10px', fontWeight: 'bold', borderColor: '#030404' }} />
-                <Box mt={2} mb={2}>
-                    <Typography
-                        variant="button"
-                        style={{ marginLeft: '10px', fontWeight: 'bold', cursor: 'pointer', color: activeTab === 'RefernalMembers' ? '#06BBCC' : '#000' }}
-                        onClick={() => handleTabChange('RefernalMembers')}
-                    >
-                        Refernal Members
-                    </Typography>
-                    <Typography
-
-                        variant="button"
-                        style={{ marginLeft: '10px', fontWeight: 'bold', cursor: 'pointer', color: activeTab === 'DownlineMembers' ? '#06BBCC' : '#000' }}
-                        onClick={() => handleTabChange('DownlineMembers')}
-                    >
-                        Downline Members
-                    </Typography>
-                    <Typography
-                        variant="button"
-                        style={{ marginLeft: '10px', fontWeight: 'bold', cursor: 'pointer', color: activeTab === 'AllMembers' ? '#06BBCC' : '#000' }}
-                        onClick={() => handleTabChange('AllMembers')}
-                    >
-                        All Members
-                    </Typography>
                 </Box>
-                <Divider style={{ marginTop: '10px', marginBottom: '10px', fontWeight: 'bold', borderColor: '#030404' }} />
-                {getFilter()}
-            </Grid>
-        </Grid>
+                <Typography variant="h5" sx={{ mt: 5, mb: 2 }}>Refferred Members</Typography>
+                <div style={{ width: '100%', overflowX: 'auto' }}>
+                    <TableContainer component={Paper}>
+                        <Table sx={{ minWidth: 1000 }}> {/* Set minWidth to enable horizontal scrolling */}
+                            <TableHead sx={{ backgroundColor: '#0d6efd' }}>
+                                <TableRow>
+                                    <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>User Avatar</TableCell>
+                                    <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>ID</TableCell>
+                                    <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Name</TableCell>
+                                    <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Position</TableCell>
+                                    <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Profession</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {refernalMembers.map((member) => (
+                                    <TableRow key={member.id}>
+                                        <TableCell>
+                                            <Avatar key={member.id} alt={member.name} src={member.avatar} />
+                                        </TableCell>
+                                        <TableCell>{member.id}</TableCell>
+                                        <TableCell>{member.name}</TableCell>
+                                        <TableCell>{member.position}</TableCell>
+                                        <TableCell>{member.profession}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </div>
+            </Box>
+        </Box>
+
+
     );
 };
 
