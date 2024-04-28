@@ -27,15 +27,15 @@ const stripePromise = loadStripe('pk_test_51OGEyFSDrJBc0PMT7YnkTkPKV4BAlhVEcsd5x
 
 const E_WALLET = [
     {
-        label: 'Credited',
-        toolTipTitle: 'All Credit Amount',
+        label: 'Total Amount',
+        toolTipTitle: 'Total Amount',
         amount: '$ 123.2',
         icon: <InfoIcon />,
         color: '#2C008A',
     },
     {
-        label: 'Debited',
-        toolTipTitle: 'All Debit Amount',
+        label: 'Remaining Amount',
+        toolTipTitle: 'Remaining Amount',
         amount: '$ 123.2',
         icon: <InfoIcon />,
         color: '#71A92F',
@@ -100,7 +100,7 @@ const EWallet = () => {
                     <Box display="flex" alignItems="center" mb={2}>
                         <Typography variant="h4" component="h4" mr={1}>E-Wallet</Typography>
                         <div style={{ marginLeft: 'auto' }}>
-                            <Button variant="contained" color="primary" onClick={() => setFundTransferOpen(true)}>Fund Transfer</Button>
+                            <Button variant="contained" color="primary" onClick={() => setFundTransferOpen(true)}>Request for Payment</Button>
                         </div>
                         {fundTransferOpen && <FundTransferForm open={fundTransferOpen} onClose={handleFundTransferClose} />}
                     </Box>

@@ -18,15 +18,16 @@ import Videos from './components/Videos/index.jsx';
 import WatchVideo from './components/Videos/WatchVideo.jsx';
 
 function App() {
-  const user = useSelector(state => state.auth.user);
+  const user = useSelector(state => state?.auth?.user);
+  console.log(user);
   const environment = process.env.NODE_ENV;
   const ProtectedRoute = ({ element }) => {
-    // return user ? element : <Navigate to="/login" />;
+    return user ? element : <Navigate to="/login" />;
     return user ? element : element;
   };
 
   const SignupProtectedRoute = ({ element }) => {
-    // return user ? element : <Navigate to="/Signup" />;
+    return user ? element : <Navigate to="/Signup" />;
     return user ? element : element;
   };
 

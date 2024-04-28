@@ -59,21 +59,30 @@ const Videos = () => {
         console.log('Form Data:', formData);
         try {
             setUploading(true);
+            
+            // Create FormData object
             const formDataToSend = new FormData();
+            formDataToSend.append('userId', 1);
             formDataToSend.append('title', formData.title);
             formDataToSend.append('description', formData.description);
-            formDataToSend.append('video', formData.videoFile);
-            formDataToSend.append('thumbnail', formData.thumbnailFile);
-
-            // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
-            const response = await fetch('YOUR_API_ENDPOINT', {
+            formDataToSend.append('video', formData.videoFile); // Append video file
+            formDataToSend.append('thumbnail', formData.thumbnailFile); // Append thumbnail file
+    
+            // Fetch endpoint for uploading data
+            const response = await fetch('http://localhost:8000/v1/add-courses', {
                 method: 'POST',
                 body: formDataToSend,
             });
+    
+            // Parse response
+            const responseData = await response.json();
+    
+            // Check for errors
             if (!response.ok) {
-                throw new Error('Error uploading video');
+                throw new Error('Error uploading data');
             }
-            console.log('Video uploaded successfully');
+    
+            console.log('Data uploaded successfully:', responseData);
             setUploading(false);
             handleClose();
         } catch (error) {
@@ -81,6 +90,8 @@ const Videos = () => {
             setUploading(false);
         }
     };
+    
+
 
     return (
         <>
