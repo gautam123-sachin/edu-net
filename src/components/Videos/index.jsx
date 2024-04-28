@@ -26,8 +26,8 @@ const Videos = () => {
     const [formData, setFormData] = useState({
         title: '',
         description: '',
-        videoFile: null,
-        thumbnailFile: null,
+        videoFile: '',
+        thumbnailFile: '',
     });
     const [uploading, setUploading] = useState(false);
 
@@ -48,18 +48,53 @@ const Videos = () => {
     };
 
     const handleFileChange = (e) => {
-        const { name, files } = e.target;
-        setFormData({
-            ...formData,
-            [name]: files[0],
-        });
+        const file = e.target.files[0];
+        if (file) {
+            // Read file as base64
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                setFormData({
+                    ...formData,
+                    videoFile: reader.result,
+                });
+            }
+        } else {
+            setFormData({
+                ...formData,
+                videoFile: "",
+                thumbnailFile: "",
+            });
+        }
+
     };
+
+    const handleFileChangeImage = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            // Read file as base64
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                setFormData({
+                    ...formData,
+                    thumbnailFile: reader.result,
+                });
+            }
+        } else {
+            setFormData({
+                ...formData,
+                videoFile: "",
+                thumbnailFile: "",
+            });
+        }
+    }
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log('Form Data:', formData);
         try {
             setUploading(true);
-            
+
             // Create FormData object
             const formDataToSend = new FormData();
             formDataToSend.append('userId', 1);
@@ -67,21 +102,21 @@ const Videos = () => {
             formDataToSend.append('description', formData.description);
             formDataToSend.append('video', formData.videoFile); // Append video file
             formDataToSend.append('thumbnail', formData.thumbnailFile); // Append thumbnail file
-    
+
             // Fetch endpoint for uploading data
             const response = await fetch('http://localhost:8000/v1/add-courses', {
                 method: 'POST',
                 body: formDataToSend,
             });
-    
+
             // Parse response
             const responseData = await response.json();
-    
+
             // Check for errors
             if (!response.ok) {
                 throw new Error('Error uploading data');
             }
-    
+
             console.log('Data uploaded successfully:', responseData);
             setUploading(false);
             handleClose();
@@ -90,7 +125,7 @@ const Videos = () => {
             setUploading(false);
         }
     };
-    
+
 
 
     return (
@@ -156,7 +191,7 @@ const Videos = () => {
                                         type="file"
                                         accept="image/*"
                                         name="thumbnailFile"
-                                        onChange={handleFileChange}
+                                        onChange={handleFileChangeImage }
                                     />
                                 </Box>
                                 <Box sx={{ mt: 2 }}>
