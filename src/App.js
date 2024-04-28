@@ -16,6 +16,7 @@ import Cancel from './components/Cencel.jsx';
 import OtpVerification from './components/Signup/OtpVerification.jsx';
 import Videos from './components/Videos/index.jsx';
 import WatchVideo from './components/Videos/WatchVideo.jsx';
+import QRpage from './components/QRpage/index.jsx';
 
 function App() {
   const user = useSelector(state => state?.auth?.user);
@@ -52,6 +53,10 @@ function App() {
           <Route
             path="/membership"
             element={<SignupProtectedRoute element={<MembershipForm user={user} />} />}
+          />
+          <Route
+            path="/QRpage"
+            element={<SignupProtectedRoute element={<QRpage />} />}
           />
           <Route
             path="/otp"

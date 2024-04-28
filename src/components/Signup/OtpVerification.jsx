@@ -56,7 +56,7 @@ const OtpVerification = ({ user }) => {
             setSnackbarSeverity('success');
             setSnackbarMessage('OTP verified successfully');
             setTimeout(() => {
-                navigate('/membership');
+                navigate('/QRpage');
             }, 200); 
         } catch (error) {
             console.error('Error verifying OTP:', error);

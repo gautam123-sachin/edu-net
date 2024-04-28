@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Grid, Card, CardMedia, CardContent, Typography, Button } from '@mui/material';
+import { Grid, Card, CardMedia, CardContent, Typography, Button, InputLabel, FormControl, Input, InputAdornment } from '@mui/material';
 import { Modal, Box, TextField, IconButton, CircularProgress } from '@mui/material';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
+import ImageIcon from '@mui/icons-material/Image';
+import VideoIcon from '@mui/icons-material/VideoLibrary';
 
 import './style.css';
 
@@ -26,8 +28,8 @@ const Videos = () => {
     const [formData, setFormData] = useState({
         title: '',
         description: '',
-        videoFile: null,
-        thumbnailFile: null,
+        videoFile: '',
+        thumbnailFile: '',
     });
     const [uploading, setUploading] = useState(false);
 
@@ -59,29 +61,24 @@ const Videos = () => {
         console.log('Form Data:', formData);
         try {
             setUploading(true);
-            
-            // Create FormData object
             const formDataToSend = new FormData();
             formDataToSend.append('userId', 1);
             formDataToSend.append('title', formData.title);
             formDataToSend.append('description', formData.description);
-            formDataToSend.append('video', formData.videoFile); // Append video file
-            formDataToSend.append('thumbnail', formData.thumbnailFile); // Append thumbnail file
-    
-            // Fetch endpoint for uploading data
+            formDataToSend.append('video', formData.videoFile);
+            formDataToSend.append('thumbnail', formData.thumbnailFile);
+
             const response = await fetch('http://localhost:8000/v1/add-courses', {
                 method: 'POST',
                 body: formDataToSend,
             });
-    
-            // Parse response
+
             const responseData = await response.json();
-    
-            // Check for errors
+
             if (!response.ok) {
                 throw new Error('Error uploading data');
             }
-    
+
             console.log('Data uploaded successfully:', responseData);
             setUploading(false);
             handleClose();
@@ -90,7 +87,7 @@ const Videos = () => {
             setUploading(false);
         }
     };
-    
+
 
 
     return (
@@ -144,20 +141,36 @@ const Videos = () => {
                                     />
                                 </Box>
                                 <Box sx={{ mt: 2 }}>
-                                    <input
-                                        type="file"
-                                        accept="video/*"
-                                        name="videoFile"
-                                        onChange={handleFileChange}
-                                    />
+                                    <FormControl>
+                                        <InputLabel>Video</InputLabel>
+                                        <Input
+                                            type="file"
+                                            accept="video/*"
+                                            name="videoFile"
+                                            onChange={handleFileChange}
+                                            startAdornment={
+                                                <InputAdornment position="start">
+                                                    <VideoIcon />
+                                                </InputAdornment>
+                                            }
+                                        />
+                                    </FormControl>
                                 </Box>
                                 <Box sx={{ mt: 2 }}>
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        name="thumbnailFile"
-                                        onChange={handleFileChange}
-                                    />
+                                    <FormControl>
+                                        <InputLabel>Thumbnail</InputLabel>
+                                        <Input
+                                            type="file"
+                                            accept="image/*"
+                                            name="thumbnailFile"
+                                            onChange={handleFileChange}
+                                            startAdornment={
+                                                <InputAdornment position="start">
+                                                    <ImageIcon />
+                                                </InputAdornment>
+                                            }
+                                        />
+                                    </FormControl>
                                 </Box>
                                 <Box sx={{ mt: 2 }}>
                                     <Button type="submit" variant="contained" disabled={uploading}>
