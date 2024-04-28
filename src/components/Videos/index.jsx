@@ -50,12 +50,47 @@ const Videos = () => {
     };
 
     const handleFileChange = (e) => {
-        const { name, files } = e.target;
-        setFormData({
-            ...formData,
-            [name]: files[0],
-        });
+        const file = e.target.files[0];
+        if (file) {
+            // Read file as base64
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                setFormData({
+                    ...formData,
+                    videoFile: reader.result,
+                });
+            }
+        } else {
+            setFormData({
+                ...formData,
+                videoFile: "",
+                thumbnailFile: "",
+            });
+        }
+
     };
+
+    const handleFileChangeImage = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            // Read file as base64
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                setFormData({
+                    ...formData,
+                    thumbnailFile: reader.result,
+                });
+            }
+        } else {
+            setFormData({
+                ...formData,
+                videoFile: "",
+                thumbnailFile: "",
+            });
+        }
+    }
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log('Form Data:', formData);
@@ -65,9 +100,10 @@ const Videos = () => {
             formDataToSend.append('userId', 1);
             formDataToSend.append('title', formData.title);
             formDataToSend.append('description', formData.description);
-            formDataToSend.append('video', formData.videoFile);
-            formDataToSend.append('thumbnail', formData.thumbnailFile);
+            formDataToSend.append('video', formData.videoFile); // Append video file
+            formDataToSend.append('thumbnail', formData.thumbnailFile); // Append thumbnail file
 
+            // Fetch endpoint for uploading data
             const response = await fetch('http://localhost:8000/v1/add-courses', {
                 method: 'POST',
                 body: formDataToSend,
@@ -163,7 +199,7 @@ const Videos = () => {
                                             type="file"
                                             accept="image/*"
                                             name="thumbnailFile"
-                                            onChange={handleFileChange}
+                                            onChange={handleFileChangeImage}
                                             startAdornment={
                                                 <InputAdornment position="start">
                                                     <ImageIcon />
