@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid, Card, CardMedia, CardContent, Typography, Button, InputLabel, FormControl, Input, InputAdornment } from '@mui/material';
 import { Modal, Box, TextField, IconButton, CircularProgress } from '@mui/material';
@@ -7,23 +7,39 @@ import ImageIcon from '@mui/icons-material/Image';
 import VideoIcon from '@mui/icons-material/VideoLibrary';
 
 import './style.css';
+import axios from 'axios';
 
 const Videos = () => {
     const navigate = useNavigate();
+    const [courses, setCourses] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const fetchData = async () => {
+        setIsLoading(true);
+        try {
+            const response = await fetch('http://localhost:8000/v1/courses-list');
+            if (!response.ok) {
+                throw new Error('Failed to fetch courses');
+            }
+            const data = await response.json();
+            setCourses(data?.courses);
+        } catch (error) {
+            console.error('Error fetching courses:', error.message);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
-    const videos = [
-        {
-            id: 1,
-            title: "Video 1",
-            thumbnail: "https://images.unsplash.com/photo-1713283699002-ac9462cedf0a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHx8",
-            videoUrl: "https://www.youtube.com/watch?v=pgrTSTdVjBs"
-        },
+    useEffect(() => {
+        fetchData();
+    }, []);
 
-    ];
+    console.log(courses)
 
-    const handleNavigate = (videoId) => {
-        navigate(`/videos/${videoId}`);
-    }
+    const handleNavigate = (videoId, videoUrl) => {
+        navigate(`/videos/${videoId}`, {
+            state: { videoUrl } 
+        });
+    };
     const [open, setOpen] = useState(false);
     const [formData, setFormData] = useState({
         title: '',
@@ -49,27 +65,8 @@ const Videos = () => {
         });
     };
 
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            // Read file as base64
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => {
-                setFormData({
-                    ...formData,
-                    videoFile: reader.result,
-                });
-            }
-        } else {
-            setFormData({
-                ...formData,
-                videoFile: "",
-                thumbnailFile: "",
-            });
-        }
-
-    };
+    
+        
 
     const handleFileChangeImage = (e) => {
         const file = e.target.files[0];
@@ -91,6 +88,20 @@ const Videos = () => {
             });
         }
     }
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        const api = "https://api.cloudinary.com/v1_1/dmiof8ebc/video/upload";
+        let formData1 = new FormData();
+        formData1.append("file", file);
+        formData1.append("upload_preset", "yqlojx24");
+        axios.post(api, formData1).then((res) => {
+           setFormData({...formData, videoFile : res?.data.url})
+        }).catch((error) => {
+            console.error("Error uploading file:", error);
+        });
+}
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log('Form Data:', formData);
@@ -110,6 +121,7 @@ const Videos = () => {
             });
 
             const responseData = await response.json();
+            fetchData();
 
             if (!response.ok) {
                 throw new Error('Error uploading data');
@@ -123,8 +135,6 @@ const Videos = () => {
             setUploading(false);
         }
     };
-
-
 
     return (
         <>
@@ -218,27 +228,36 @@ const Videos = () => {
                     </Modal>
                 </Grid>
             </Grid>
-            <Grid container spacing={{ xs: 2, sm: 3, md: 4, lg: 6 }} className='video-container'>
-                {videos.map((video) => (
-                    <Grid item key={video.id} xs={12} sm={6} md={4} lg={3}>
-                        <Card>
-                            <CardMedia
-                                component="img"
-                                height="200"
-                                image={video.thumbnail}
-                                alt={video.title} />
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    {video.title}
-                                </Typography>
-                                <Button variant="contained" color="primary" onClick={() => handleNavigate(video.id)}>
-                                    Watch Video
-                                </Button>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                ))}
+            <div>
+      {isLoading ? (
+        <div style={{ textAlign: 'center', marginTop: '50px' }}>
+          <CircularProgress />
+        </div>
+      ) : (
+        <Grid container spacing={{ xs: 2, sm: 3, md: 4, lg: 6 }} className='video-container'>
+          {courses?.map((video) => (
+            <Grid item key={video.id} xs={12} sm={6} md={4} lg={3}>
+              <Card>
+                <CardMedia
+                  component="img"
+                  height="200"
+                  image={video.thumbnail}
+                  alt={video.title}
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    {video.title}
+                  </Typography>
+                  <Button variant="contained" color="primary" onClick={() => handleNavigate(video._id, video.video)}>
+                    Watch Video
+                  </Button>
+                </CardContent>
+              </Card>
             </Grid>
+          ))}
+        </Grid>
+      )}
+    </div>
         </>
     );
 }

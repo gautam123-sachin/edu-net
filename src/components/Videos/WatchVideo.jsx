@@ -2,11 +2,11 @@ import React from 'react';
 import { Box, Typography, Button, Grid, TextField, Card, CardMedia } from '@mui/material'; // Import Card from Material-UI
 import Comment from './Comment';
 import ReactWebMediaPlayer from 'react-web-media-player';
-
+import { useLocation } from 'react-router-dom';
 import './WatchVideo.css';
+import axios from 'axios';
 
 const RelatedVideo = ({ thumbnail, title }) => {
-    console.log(thumbnail, title);
     return (
         <Grid item xs={12} sm={6} md={3}>
             <Card>
@@ -26,10 +26,12 @@ const RelatedVideo = ({ thumbnail, title }) => {
     );
 }
 
-const WatchVideo = ({ videoUrl }) => {
+const WatchVideo = () => {
     // State for managing comment input and existing comments
     const [comment, setComment] = React.useState("");
     const [comments, setComments] = React.useState([]);
+    const location = useLocation();
+    const { videoUrl } = location.state || {};
 
     const handleAddComment = () => {
         if (comment.trim() !== "") {
@@ -37,6 +39,17 @@ const WatchVideo = ({ videoUrl }) => {
             setComment("");
         }
     }
+
+    const uploadfile = (files)=>{
+            const api = "https://api.cloudinary.com/v1_1/dmiof8ebc/image/upload";
+            let formData = new FormData()
+            formData.append("file", files[0]);
+            formData.append("upload_preset","yqlojx24",formData);
+            axios.post(api).then((res)=>{
+                console.log(res,'sdfsd');
+            })
+    }
+
 
     const relatedVideos = [
         {
@@ -59,16 +72,12 @@ const WatchVideo = ({ videoUrl }) => {
 
     return (
         <Box className="watch-container-box">
-            <ReactWebMediaPlayer
-                title="YouTube video player"
-                video={videoUrl}
+            <iframe
+                title="Video Player"
+                src={videoUrl}
                 allowFullScreen
-                logo={{
-                    img: "https://images.unsplash.com/photo-1712693028986-6f0150a5e39a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw4fHx8ZW58MHx8fHx8",
-                    href: "https:/redirection-link.com"
-                }}
-                className="react-web-media-player"
-            />
+                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+            ></iframe>
             <Box mt={2}>
                 <Typography variant="h5" gutterBottom>
                     Video Title
