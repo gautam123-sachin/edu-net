@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Grid, Box, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { loadStripe } from '@stripe/stripe-js';
 
 const QRpage = () => {
   return (

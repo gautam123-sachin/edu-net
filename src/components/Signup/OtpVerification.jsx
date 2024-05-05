@@ -14,6 +14,7 @@ import axios from 'axios';
 import OtpInput from 'react-otp-input'
 import { useNavigate } from 'react-router-dom';
 import MuiAlert from '@mui/material/Alert';
+import { loadStripe } from '@stripe/stripe-js';
 
 
 const OtpVerification = ({ user }) => {
@@ -48,6 +49,39 @@ const OtpVerification = ({ user }) => {
         setOpenSnackbar(false);
     };
 
+    console.log(user, "user")
+
+    const user1 = {
+        firstname: "user",
+        lastname: "user2",
+        email: "user@gmail.com"
+    }
+    const { firstname, lastname, email } = user1;
+    const stripeData = {
+        name: `${firstname ?? ""} ${lastname ?? ""}`,
+        paymentMethod: "card",
+        currency: 'INR',
+        email: user?.user?.email ?? "",
+        amount: 139,
+    }
+
+    const handleStripe = async () => {
+        const stripe = await loadStripe('pk_test_51OGEyFSDrJBc0PMT7YnkTkPKV4BAlhVEcsd5xvqeyB8GHuC8cNLzJTT4VhbBu0BH4aQYiEZcupUHw2JT7QSggTNG001fwkfnAI');
+        try {
+            const response = await axios.post('http://localhost:8000/v1/membership/payment', stripeData, {
+                withCredentials: true,
+            });
+            const { sessionId } = response.data;
+            const result = await stripe.redirectToCheckout({ sessionId });
+            console.log(result, "result");
+            if (result.error) {
+                console.error(result.error.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
     const handleVerifyOtp = async () => {
         try {
             const response = await axios.post('http://localhost:8000/v1/verify-otp', { otp, userId: user.user._id });
@@ -56,8 +90,9 @@ const OtpVerification = ({ user }) => {
             setSnackbarSeverity('success');
             setSnackbarMessage('OTP verified successfully');
             setTimeout(() => {
-                navigate('/QRpage');
-            }, 200); 
+                // navigate('/QRpage');
+                handleStripe();
+            }, 200);
         } catch (error) {
             console.error('Error verifying OTP:', error);
             setOpenSnackbar(true);
@@ -78,7 +113,7 @@ const OtpVerification = ({ user }) => {
                                     <p className="text-gray-500 dark:text-gray-400">Enter the OTP sent to your registered email address</p>
                                 </div>
                                 <div>
-                                    <div style={{marginLeft:'60px'}}>
+                                    <div style={{ marginLeft: '60px' }}>
                                         <OtpInput
                                             value={otp}
                                             onChange={handleOtpChange}

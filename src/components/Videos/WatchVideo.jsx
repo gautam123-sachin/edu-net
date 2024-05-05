@@ -40,16 +40,6 @@ const WatchVideo = () => {
         }
     }
 
-    const uploadfile = (files)=>{
-            const api = "https://api.cloudinary.com/v1_1/dmiof8ebc/image/upload";
-            let formData = new FormData()
-            formData.append("file", files[0]);
-            formData.append("upload_preset","yqlojx24",formData);
-            axios.post(api).then((res)=>{
-                console.log(res,'sdfsd');
-            })
-    }
-
 
     const relatedVideos = [
         {
