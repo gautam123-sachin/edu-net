@@ -33,8 +33,6 @@ const OtpVerification = ({ user }) => {
         width: '25ch',
     };
 
-    console.log("user", user.user._id);
-
     const navigate = useNavigate();
     const [otp, setOtp] = useState('');
     const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -85,13 +83,12 @@ const OtpVerification = ({ user }) => {
     const handleVerifyOtp = async () => {
         try {
             const response = await axios.post('http://localhost:8000/v1/verify-otp', { otp, userId: user.user._id });
-            console.log('OTP verification response:', response.data);
             setOpenSnackbar(true);
             setSnackbarSeverity('success');
             setSnackbarMessage('OTP verified successfully');
             setTimeout(() => {
-                // navigate('/QRpage');
-                handleStripe();
+                navigate('/QRpage', { state: user });
+                // handleStripe();
             }, 200);
         } catch (error) {
             console.error('Error verifying OTP:', error);
