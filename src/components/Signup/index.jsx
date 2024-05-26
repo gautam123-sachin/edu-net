@@ -16,7 +16,9 @@ const Signup = () => {
         firstname: '',
         lastname: '',
         email: '',
+        phone_no: '',
         password: '',
+        referral_code: '',
     });
     const [loading, setLoading] = useState(false);
     const [formErrors, setFormErrors] = useState({});
@@ -51,8 +53,16 @@ const Signup = () => {
         } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
             errors.email = 'Email is invalid';
         }
+        if (!formData.phone_no.trim()) {
+            errors.phone_no = "Phone number is required";
+        } else if (!/^\d{10}$/.test(formData.phone_no)) {
+            errors.phone_no = 'Phone number is invalid. Please enter a 10-digit number without spaces or special characters.';
+        }
         if (!formData.password.trim()) {
             errors.password = "Password is required";
+        }
+        if (!formData.referral_code.trim()) {
+            errors.referral_code = "Referral code is required";
         }
         setFormErrors(errors);
         return Object.keys(errors).length === 0;
@@ -78,7 +88,9 @@ const Signup = () => {
                         firstname: '',
                         lastname: '',
                         email: '',
+                        phone_no: '',
                         password: '',
+                        referral_code: '',
                     })
                 }
             } catch (error) {
@@ -104,8 +116,8 @@ const Signup = () => {
     };
 
     return (
-        <div className="sign-container">
-            <div className="sign-header">
+        <div className="sign-container mt-3">
+            <div className="sign-header mt-5 p-2">
                 <h2>Signup</h2>
             </div>
             <div className="sign-form">
@@ -145,6 +157,18 @@ const Signup = () => {
                 />
                 {formErrors.email && <p className="error">{formErrors.email}</p>}
 
+                <label htmlFor="phone_no">Phone No.</label>
+                <input
+                    type="text"
+                    id="phone_no"
+                    name="phone_no"
+                    value={formData.phone_no}
+                    onChange={handleInputChange}
+                    placeholder="Enter your phone"
+                    maxLength={13}
+                />
+                {formErrors.phone_no && <p className="error">{formErrors.phone_no}</p>}
+
                 <label htmlFor="password">Password:</label>
                 <input
                     type="password"
@@ -156,6 +180,17 @@ const Signup = () => {
                     maxLength={20} // Set maximum length
                 />
                 {formErrors.password && <p className="error">{formErrors.password}</p>}
+                <label htmlFor="referral_code">Referral Code</label>
+                <input
+                    type="referral_code"
+                    id="referral_code"
+                    name="referral_code"
+                    value={formData.referral_code}
+                    onChange={handleInputChange}
+                    placeholder="Enter your referral codes"
+                    maxLength={10} // Set maximum length
+                />
+                {formErrors.referral_code && <p className="error">{formErrors.referral_code}</p>}
                 <button type="submit" className={`signup-button ${loading ? 'loading' : ''}`} disabled={loading} onClick={handleSignup}>
                     {loading ? 'Signing up...' : 'Signup'}
                 </button>

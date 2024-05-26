@@ -16,6 +16,7 @@ import Cancel from './components/Cencel.jsx';
 import OtpVerification from './components/Signup/OtpVerification.jsx';
 import Videos from './components/Videos/index.jsx';
 import WatchVideo from './components/Videos/WatchVideo.jsx';
+
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AdminLogin from './Admin-panel/Components/AdminLogin/AdminLogin.js'
 
@@ -25,17 +26,21 @@ import AdminDashboard from './Admin-panel/Components/Dashboard/AdminDashboard.js
 import MemberList from './Admin-panel/Components/Member/MemberList.js'
 import PaymentList from './Admin-panel/Components/Payment/PaymentList.js'
 
-
 const theme = createTheme();
 const NotAuthorized = () => <div>Not Authorized</div>;
 
 function App() {
   const user = useSelector(state => state?.auth?.user);
+import QRpage from './components/QRpage/index.jsx';
 
+function App() {
+  const user = useSelector(state => state?.auth?.user);
+  console.log(user);
   const environment = process.env.NODE_ENV;
 
   const ProtectedRoute = ({ element }) => {
     return user ? element : <Navigate to="/login" />;
+    return user ? element : element;
   };
 
   const SignupProtectedRoute = ({ element }) => {
@@ -113,6 +118,52 @@ function App() {
         </>
       </Router>
     </ThemeProvider>
+    return user ? element : element;
+  };
+
+  return (
+    <Router>
+      <>
+        <Routes>
+          <Route path="/" element={<HomeWithHeader />} />
+          <Route path="/about" element={<AboutWithHeader />} />
+          <Route path="/contact" element={<ContactWithHeader />} />
+          {/* <Route path='/login' element={<Login />} /> */}
+          {environment === 'production' ? (
+            <Route path="/login" element={<ComingSoon />} />
+          ) : (
+            <Route path="/login" element={<Login />} />
+          )}
+          <Route path='/signup' element={<Signup />} />
+          <Route
+            path="/dashboard/*"
+            element={<ProtectedRoute element={<Dashboard />} />}
+          />
+          <Route
+            path="/membership"
+            element={<SignupProtectedRoute element={<MembershipForm user={user} />} />}
+          />
+          <Route
+            path="/QRpage"
+            element={<SignupProtectedRoute element={<QRpage />} />}
+          />
+          <Route
+            path="/otp"
+            element={<SignupProtectedRoute element={<OtpVerification user={user} />} />}
+          />
+          <Route
+            path="/success"
+            element={<ProtectedRoute element={<Success />} />}
+          />
+          <Route
+            path="/cancel"
+            element={<ProtectedRoute element={<Cancel />} />}
+          />
+          <Route path="/videos" element={<VideosWithHeader />} />
+          <Route path='/videos/:id' element={<WatchVideoHeader />} />
+        </Routes>
+      </>
+    </Router>
   );
 }
 

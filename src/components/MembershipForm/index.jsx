@@ -18,15 +18,20 @@ import { generateReferralCode } from '../../Helper.jsx';
 
 import './style.css';
 
-const MembershipForm = ({ user }) => {
+const MembershipForm = () => {
+    const user = {
+        firstname: "user",
+        lastname: "user2",
+        email:"user@gmail.com"
+    }
     const yourReferralCode = generateReferralCode();
     console.log('yourReferralCode', yourReferralCode)
-    const { firstname, lastname, email } = user.user;
+    const { firstname, lastname, email } = user;
     const [formData, setFormData] = useState({
-        name: `${firstname} ${lastname}`,
+        name: `${firstname ?? ""} ${lastname ?? ""}`,
         address: '',
         phone: '',
-        email: email,
+        email: email ?? "",
         referralCode: '',
         position: 'left',
         amount: 299,
@@ -135,24 +140,13 @@ const MembershipForm = ({ user }) => {
                                     helperText={errors.referralCode}
                                     required
                                 />
-                                <FormControl fullWidth margin="normal">
-                                    <Select
-                                        name="position"
-                                        size="small"
-                                        value={formData.position}
-                                        onChange={handleInputChange}
-                                    >
-                                        <MenuItem value="left">Left</MenuItem>
-                                        <MenuItem value="right">Right</MenuItem>
-                                    </Select>
-                                </FormControl>
                                 <TextField
                                     fullWidth
                                     label="Phone"
                                     name="phone"
                                     margin="normal"
                                     size="small"
-                                    type="number"
+                                    type="text"
                                     value={formData.phone}
                                     onChange={handleInputChange}
                                     error={errors.phone}
