@@ -1,163 +1,73 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import SaveIcon from '@mui/icons-material/Save';
-import CancelIcon from '@mui/icons-material/Close';
 import {
-  GridRowModes,
   DataGrid,
-  GridToolbarContainer,
-  GridActionsCellItem,
-  GridRowEditStopReasons,
 } from '@mui/x-data-grid';
 
-import { Card, CardContent, Divider, Grid, Typography } from '@mui/material';
+import { Card, CardContent, Divider, Grid, Stack, Typography } from '@mui/material';
+import axios from 'axios';
 
-const roles = ['Market', 'Finance', 'Development'];
-const initialRows = [
-  {
-    id: 1,
-    name: "anik",
-    age: 25,
-    joinDate: "10/10/2033",
-    role: "active",
-  },
-  {
-    id: 1,
-    name: "anik",
-    age: 25,
-    joinDate: "10/10/2033",
-    role: "active",
-  },
-  {
-    id: 1,
-    name: "anik",
-    age: 25,
-    joinDate: "10/10/2033",
-    role: "active",
-  }
-];
 
 
 export default function PaymentList() {
-  const [rows, setRows] = React.useState(initialRows);
-  const [rowModesModel, setRowModesModel] = React.useState({});
-
-  const handleRowEditStop = (params, event) => {
-    if (params.reason === GridRowEditStopReasons.rowFocusOut) {
-      event.defaultMuiPrevented = true;
-    }
-  };
-
-  const handleEditClick = (id) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
-  };
-
-  const handleSaveClick = (id) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-  };
-
-  const handleDeleteClick = (id) => () => {
-    setRows(rows.filter((row) => row.id !== id));
-  };
-
-  const handleCancelClick = (id) => () => {
-    setRowModesModel({
-      ...rowModesModel,
-      [id]: { mode: GridRowModes.View, ignoreModifications: true },
-    });
-
-    const editedRow = rows.find((row) => row.id === id);
-    if (editedRow.isNew) {
-      setRows(rows.filter((row) => row.id !== id));
-    }
-  };
-
-  const processRowUpdate = (newRow) => {
-    const updatedRow = { ...newRow, isNew: false };
-    setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
-    return updatedRow;
-  };
-
-  const handleRowModesModelChange = (newRowModesModel) => {
-    setRowModesModel(newRowModesModel);
-  };
+const [rows, setRows] = React.useState([]);
 
   const columns = [
-    { field: 'name', headerName: 'Name', width: 180, editable: true },
+    { field: 'username', headerName: 'Username', width: 170 },
+    { field: 'transactionId', headerName: 'Transaction ID', width: 170 },
+    { field: 'phoneNo', headerName: 'Phone Number', width: 160 },
+    { field: 'status', headerName: 'Status', width: 150 },
     {
-      field: 'age',
-      headerName: 'Age',
-      type: 'number',
-      width: 80,
-      align: 'left',
-      headerAlign: 'left',
-      editable: true,
-    },
-    {
-      field: 'joinDate',
-      headerName: 'Join date',
-      width: 180,
-      editable: true,
-    },
-    {
-      field: 'role',
-      headerName: 'Department',
-      width: 220,
-      editable: true,
-      type: 'singleSelect',
-      valueOptions: ['Market', 'Finance', 'Development'],
-    },
-    {
-      field: 'actions',
-      type: 'actions',
-      headerName: 'Actions',
-      width: 100,
-      cellClassName: 'actions',
-      getActions: ({ id }) => {
-        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
-
-        if (isInEditMode) {
-          return [
-            <GridActionsCellItem
-              icon={<SaveIcon />}
-              label="Save"
-              sx={{
-                color: 'primary.main',
-              }}
-              onClick={handleSaveClick(id)}
-            />,
-            <GridActionsCellItem
-              icon={<CancelIcon />}
-              label="Cancel"
-              className="textPrimary"
-              onClick={handleCancelClick(id)}
-              color="inherit"
-            />,
-          ];
-        }
-
-        return [
-          <GridActionsCellItem
-            icon={<EditIcon />}
-            label="Edit"
-            className="textPrimary"
-            onClick={handleEditClick(id)}
-            color="inherit"
-          />,
-          <GridActionsCellItem
-            icon={<DeleteIcon />}
-            label="Delete"
-            onClick={handleDeleteClick(id)}
-            color="inherit"
-          />,
-        ];
-      },
+      field: 'action',
+      headerName: 'Action',
+      width: 300,
+      renderCell: (params) => (
+        <Stack direction="row" spacing={1}>
+          <Button variant="contained" color="secondary" onClick={() => handleDelete(params.row)}>
+            Delete
+          </Button>
+         {params?.row?.status === "pending"  && <Button variant="contained" color="success" onClick={() => handleApprove(params.row)}>
+            Approve
+          </Button> }
+        </Stack>
+      ),
     },
   ];
+
+  const fetchAllPaymentRequests = async() => {
+    const response = await axios.get("http://localhost:8000/v1/payments");
+    if (response?.status === 200) {
+      setRows(response?.data);
+    }
+  }
+
+  const handleDelete = async(row) => {
+    try {
+      const res = await axios.delete("http://localhost:8000/v1/payments", {transactionId: row?.transactionId});
+      if (res?.status === 200) {
+        fetchAllPaymentRequests();
+      }
+     } catch (error) {
+      
+     }
+  };
+  
+  const handleApprove = async(row) => {
+   try {
+    const res = await axios.put("http://localhost:8000/v1/payments", {transactionId: row?.transactionId});
+    if (res?.data?.transactionId) {
+      fetchAllPaymentRequests();
+    }
+   } catch (error) {
+    
+   }
+  };
+
+  React.useEffect(() => {
+    fetchAllPaymentRequests();
+  }, [])
+  
 
   return (
     <Grid>
@@ -169,7 +79,7 @@ export default function PaymentList() {
                 gutterBottom
                 color="textPrimary"
               >
-                Payment Request
+                Payment Approval
               </Typography>
               <Box
                 sx={{
@@ -186,14 +96,8 @@ export default function PaymentList() {
                 <DataGrid
                   rows={rows}
                   columns={columns}
-                  editMode="row"
-                  rowModesModel={rowModesModel}
-                  onRowModesModelChange={handleRowModesModelChange}
-                  onRowEditStop={handleRowEditStop}
-                  processRowUpdate={processRowUpdate}
-                  slotProps={{
-                    toolbar: { setRows, setRowModesModel },
-                  }}
+                  getRowId={(row) => row._id}
+                  isCellEditable={false}
                 />
               </Box>
             </CardContent>

@@ -156,7 +156,7 @@ function AdminLayout() {
                                     to: "/member-list"
                                 },
                                 {
-                                    text: "Payment Request",
+                                    text: "Payment Approval",
                                     icon: <CurrencyRupeeIcon />,
                                     to: "/payment-request-list"
                                 }
